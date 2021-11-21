@@ -1,0 +1,14 @@
+{
+  "name": "iot-console-server",
+  "version": "1.0.0",
+  "description": "Backend for IOT console ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "S8",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
