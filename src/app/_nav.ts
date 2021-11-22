@@ -12,6 +12,15 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
+    name: 'Inventory'
+  },
+  {
+    name: 'Devices',
+    url: '/widgets',
+    icon: 'cil-router'
+  },
+  {
+    title: true,
     name: 'Theme'
   },
   {
@@ -233,7 +242,7 @@ export const navItems: INavData[] = [
     },
     attributes: { disabled: true },
   },
-  {
+  /*{
     name: 'Download CoreUI',
     url: 'http://coreui.io/angular/',
     icon: 'icon-cloud-download',
@@ -247,5 +256,5 @@ export const navItems: INavData[] = [
     icon: 'icon-layers',
     variant: 'danger',
     attributes: { target: '_blank', rel: 'noopener' }
-  }
+  }*/
 ];

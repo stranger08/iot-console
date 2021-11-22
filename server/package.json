@@ -4,6 +4,7 @@
   "description": "Backend for IOT console ",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "test"
   },
   "author": "S8",
