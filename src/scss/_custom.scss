@@ -1,1 +1,5 @@
 // Here you can add other styles
+.table-hover-custom {
+    @extend .table-hover;
+    cursor: pointer;
+}

@@ -69,6 +69,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
+        path: 'devices',
+        loadChildren: () => import('./views/devices/devices.module').then(m => m.DevicesModule)
+      },
+      {
         path: 'icons',
         loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)
       },

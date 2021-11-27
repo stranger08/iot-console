@@ -1,0 +1,107 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Registered devices
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-sm table-hover-custom">
+                <thead>
+                    <tr>
+                      <th>Device Name</th>
+                      <th>Date registered</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr *ngFor="let device of devices" (click)="viewDevice(device.id)">
+                        <td>{{ device.name }}</td>
+                        <td>{{ device.registered }}</td>
+                        <td>{{ device.type }}</td>
+                        <td>
+                            <span class="badge"
+                            [ngClass]="{
+                                'badge-success' : device.status === 'Active',
+                                'badge-danger' : device.status === 'Error' || device.status === 'Unreachable' || device.status === 'Failed',
+                                'badge-secondary' : device.status === 'Inactive',
+                                'badge-warning' : device.status === 'Interruptions'
+                              }">{{ device.status }}</span>
+                        </td>
+                    </tr>
+                  </tbody>
+            </table>
+            <!--<table class="table table-bordered table-striped table-sm table-hover-custom">
+              <thead>
+                <tr>
+                  <th>Device Name</th>
+                  <th>Date registered</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr (click)="viewDevice(1)">
+                  <td>Living Room temperature</td>
+                  <td>2012/01/01</td>
+                  <td>Thermostat</td>
+                  <td>
+                    <span class="badge badge-success">Active</span>
+                  </td>
+                </tr>
+                <tr (click)="viewDevice(2)">
+                  <td>Kitchen temperature</td>
+                  <td>2012/02/01</td>
+                  <td>Thermostat</td>
+                  <td>
+                    <span class="badge badge-danger">Unreachable</span>
+                  </td>
+                </tr>
+                <tr (click)="viewDevice(3)">
+                  <td>Bathroom temperature</td>
+                  <td>2012/02/01</td>
+                  <td>Thermostat</td>
+                  <td>
+                    <span class="badge badge-secondary">Inactive</span>
+                  </td>
+                </tr>
+                <tr (click)="viewDevice(4)">
+                  <td>Bedroom temperature</td>
+                  <td>2012/03/01</td>
+                  <td>Thermostat</td>
+                  <td>
+                    <span class="badge badge-warning">Weak connection</span>
+                  </td>
+                </tr>
+                <tr (click)="viewDevice(5)">
+                  <td>Guestroom temperature</td>
+                  <td>2012/01/21</td>
+                  <td>Thermostat</td>
+                  <td>
+                    <span class="badge badge-success">Active</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>-->
+            <nav>
+              <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
