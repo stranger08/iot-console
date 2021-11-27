@@ -7,17 +7,25 @@ import { DevicesComponent } from './devices.component';
 const routes: Routes = [
     {
         path: '',
-        component: DevicesComponent,
         data: {
             title: 'Devices'
         },
-    },
-    {
-        path: ':id',
-        component: DeviceComponent,
-        data: {
-            title: 'Device'
-        }
+        children: [
+            {
+                path: '',
+                component: DevicesComponent,
+                data: {
+                    title: 'List'
+                },
+            },
+            {
+                path: ':id',
+                component: DeviceComponent,
+                data: {
+                    title: 'Device'
+                }
+            }
+        ]
     }
 ];
 
