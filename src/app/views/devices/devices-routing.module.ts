@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DeviceComponent } from "./device.component";
 import { DevicesComponent } from './devices.component';
+import { RegisterDeviceComponent } from "./register.component";
 
 const routes: Routes = [
     {
@@ -19,12 +20,19 @@ const routes: Routes = [
                 },
             },
             {
-                path: ':id',
+                path: 'view/:id',
                 component: DeviceComponent,
                 data: {
                     title: 'Device'
                 }
-            }
+            },
+            {
+                path: 'create',
+                component: RegisterDeviceComponent,
+                data: {
+                    title: 'Create'
+                }
+            },
         ]
     }
 ];

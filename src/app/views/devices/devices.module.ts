@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { DeviceComponent } from './device.component';
 import { DevicesComponent } from './devices.component';
+import { RegisterDeviceComponent } from './register.component';
 import { DevicesRoutingModule } from './devices-routing.module';
 
 @NgModule({
@@ -11,10 +13,12 @@ import { DevicesRoutingModule } from './devices-routing.module';
     ChartsModule,
     CommonModule,
     DevicesRoutingModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     DeviceComponent,
-    DevicesComponent
+    DevicesComponent,
+    RegisterDeviceComponent,
   ]
 })
 export class DevicesModule { }

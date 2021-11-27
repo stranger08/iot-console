@@ -19,7 +19,11 @@ export class DevicesComponent {
     }
 
     viewDevice($id) {
-        this.router.navigate([$id], { relativeTo: this.route });
+        this.router.navigate(['view', $id], { relativeTo: this.route });
+    }
+
+    addDevice() {
+        this.router.navigate(['create'], { relativeTo: this.route });
     }
 
     ngOnInit() {

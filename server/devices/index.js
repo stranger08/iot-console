@@ -43,9 +43,14 @@ devices.get('/', (req, res) => {
     res.status(200).json(DEVICES);
 });
 
+const { v4: uuidv4 } = require('uuid');
 devices.post('/', (req, res) => {
-    DEVICES.push(req.body);
-    res.status(201).json(req.body);
+    const DEVICE = {
+        id: uuidv4(),
+        ...req.body,
+    }
+    DEVICES.push(DEVICE);
+    res.status(201).json(DEVICE);
 });
 
 devices.get('/:id', (req, res) => {

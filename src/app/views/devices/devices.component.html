@@ -7,6 +7,9 @@
             <i class="fa fa-align-justify"></i> Registered devices
           </div>
           <div class="card-body">
+            <div class="col-6 col-sm-4 col-md-2 col-xl mb-3">
+              <button type="button" class="btn btn-primary" (click)="addDevice()">Add</button>
+            </div>
             <table class="table table-bordered table-striped table-sm table-hover-custom">
                 <thead>
                     <tr>
@@ -33,58 +36,6 @@
                     </tr>
                   </tbody>
             </table>
-            <!--<table class="table table-bordered table-striped table-sm table-hover-custom">
-              <thead>
-                <tr>
-                  <th>Device Name</th>
-                  <th>Date registered</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr (click)="viewDevice(1)">
-                  <td>Living Room temperature</td>
-                  <td>2012/01/01</td>
-                  <td>Thermostat</td>
-                  <td>
-                    <span class="badge badge-success">Active</span>
-                  </td>
-                </tr>
-                <tr (click)="viewDevice(2)">
-                  <td>Kitchen temperature</td>
-                  <td>2012/02/01</td>
-                  <td>Thermostat</td>
-                  <td>
-                    <span class="badge badge-danger">Unreachable</span>
-                  </td>
-                </tr>
-                <tr (click)="viewDevice(3)">
-                  <td>Bathroom temperature</td>
-                  <td>2012/02/01</td>
-                  <td>Thermostat</td>
-                  <td>
-                    <span class="badge badge-secondary">Inactive</span>
-                  </td>
-                </tr>
-                <tr (click)="viewDevice(4)">
-                  <td>Bedroom temperature</td>
-                  <td>2012/03/01</td>
-                  <td>Thermostat</td>
-                  <td>
-                    <span class="badge badge-warning">Weak connection</span>
-                  </td>
-                </tr>
-                <tr (click)="viewDevice(5)">
-                  <td>Guestroom temperature</td>
-                  <td>2012/01/21</td>
-                  <td>Thermostat</td>
-                  <td>
-                    <span class="badge badge-success">Active</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>-->
             <nav>
               <ul class="pagination">
                 <li class="page-item"><a class="page-link" href="#">Prev</a></li>
