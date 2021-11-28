@@ -1,8 +1,10 @@
 export class BaseService {
 
-    auth() {
-        return {
-          headers: { ['Authorization']: `Bearer ${window.sessionStorage.getItem('token')}` }
-        };
-    }
+  _hostUrl:string = 'http://localhost:3000';
+
+  auth() {
+    return {
+      headers: { ['Authorization']: `Bearer ${window.sessionStorage.getItem('token')}` }
+    };
+  }
 }

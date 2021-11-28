@@ -7,8 +7,6 @@ import { BaseService } from './BaseService';
 })
 export class DevicesService extends BaseService {
 
-  _hostUrl:string = 'http://localhost:3000';
-
   constructor(
     private http: HttpClient
   ) {

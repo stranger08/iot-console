@@ -12,9 +12,14 @@ app.use(cors({
 const passport = require('./auth');
 app.use(passport.initialize());
 
-const { login } = require('./auth/routes');
+// application specific routes
+const { login, register } = require('./auth/routes');
 app.post('/login', passport.authenticate('login', {session: false}), login);
+app.post('/register', register);
+
+// domain specific router
 app.use('/devices', passport.authenticate('auth', {session: false}), require('./devices'));
+
 
 // TODO:
 // authenticate can accept custom callback if we want to get exact reason as to why jwt verify failed, for example if we are up to 

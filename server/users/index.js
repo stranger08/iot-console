@@ -2,8 +2,6 @@ const USERS = [
     {
         id: "0000-0000-0000-0001",
         email: 'admin',
-        name: 'Admin',
-        surname: 'Admin',
         password: 'test',
         registered: '2012/11/15',
         role: 'Admin',
@@ -12,8 +10,6 @@ const USERS = [
     {
         id: "0000-0000-0000-0002",
         email: 'test@test.com',
-        name: 'Tester',
-        surname: 'Tester',
         password: 'test',
         registered: '2012/11/15',
         type: 'Thermostat',
@@ -22,8 +18,6 @@ const USERS = [
     {
         id: "0000-0000-0000-0003",
         email: 'test3@test.com',
-        name: 'Tester',
-        surname: 'Tester',
         password: 'test',
         registered: '2012/11/15',
         role: 'User',
@@ -48,8 +42,8 @@ users.post('/', (req, res) => {
     res.status(201).json(USER);
 });
 
-users.get('/:id', (req, res) => {
-    const USER = USERS.find(u => u.id == req.params.id);
+users.get('/:email', (req, res) => {
+    const USER = USERS.find(u => u.email == req.params.email);
     if (USER) {
         res.status(200).json(USER);
     } else {
