@@ -6,6 +6,9 @@
           <div class="card-group">
             <div class="card p-4">
               <div class="card-body">
+                <alert type="danger" *ngIf="error">
+                  <strong>Login failed!</strong> {{ errorMessage }}
+                </alert>
                 <form>
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
@@ -13,13 +16,13 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="icon-user"></i></span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Username" autocomplete="username" required>
+                    <input [formControl]="username" type="text" class="form-control" placeholder="Username" autocomplete="username" required (focus)="hideError()">
                   </div>
                   <div class="input-group mb-4">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="icon-lock"></i></span>
                     </div>
-                    <input type="password" class="form-control" placeholder="Password" autocomplete="current-password" required>
+                    <input [formControl]="password" type="password" class="form-control" placeholder="Password" autocomplete="current-password" required (focus)="hideError()">
                   </div>
                   <div class="row">
                     <div class="col-6">
