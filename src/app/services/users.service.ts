@@ -19,12 +19,18 @@ export class UsersService extends BaseService {
   }
 
   saveOne(user) {
-    const REQUEST_URL = `${super._hostUrl}/users`;
+    const REQUEST_URL = `${this._hostUrl}/users`;
+    console.log(REQUEST_URL);
     return this.http.post(REQUEST_URL, user, this.auth());
   }
 
   findOneByEmail(email) {
-    const REQUEST_URL = `${super._hostUrl}/users/${email}`;
+    const REQUEST_URL = `${this._hostUrl}/users/${email}`;
+    return this.http.get(REQUEST_URL, this.auth());
+  }
+
+  findMany() {
+    const REQUEST_URL = `${this._hostUrl}/users`;
     return this.http.get(REQUEST_URL, this.auth());
   }
 }

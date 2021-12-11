@@ -17,8 +17,14 @@ const { login, register } = require('./auth/routes');
 app.post('/login', passport.authenticate('login', {session: false}), login);
 app.post('/register', register);
 
-// domain specific router
-app.use('/devices', passport.authenticate('auth', {session: false}), require('./devices'));
+// domain specific routers
+const { usersRoutes} = require('./users');
+const { devicesRoutes } = require('./devices');
+const { controlRoutes } = require('./control');
+
+app.use('/users', passport.authenticate('auth', {session: false}), usersRoutes);
+app.use('/devices', passport.authenticate('auth', {session: false}), devicesRoutes);
+app.use('/control', passport.authenticate('auth', {session: false}), controlRoutes);
 
 
 // TODO:

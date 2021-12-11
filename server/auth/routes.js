@@ -29,6 +29,7 @@ const register = (req, res) => {
 
     const USER = {
         ...req.body,
+        role: 'User',
         registered: new Date(),
         status: "Active",
     }

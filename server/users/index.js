@@ -13,6 +13,7 @@ const USERS = [
         password: 'test',
         registered: '2012/11/15',
         type: 'Thermostat',
+        role: 'User',
         status: 'Active'
     },
     {
@@ -26,23 +27,24 @@ const USERS = [
 ];
 
 const express = require('express');
-const users = express.Router();
+const usersRoutes = express.Router();
 
-users.get('/', (req, res) => {
+usersRoutes.get('/', (req, res) => {
     res.status(200).json(USERS);
 });
 
 const { v4: uuidv4 } = require('uuid');
-users.post('/', (req, res) => {
+
+usersRoutes.post('/', (req, res) => {
     const USER = {
         id: uuidv4(),
         ...req.body,
     }
-    users.push(USER);
+    USERS.push(USER);
     res.status(201).json(USER);
 });
 
-users.get('/:email', (req, res) => {
+usersRoutes.get('/:email', (req, res) => {
     const USER = USERS.find(u => u.email == req.params.email);
     if (USER) {
         res.status(200).json(USER);
@@ -52,5 +54,6 @@ users.get('/:email', (req, res) => {
 });
 
 module.exports = {
+    usersRoutes,
     USERS
 };

@@ -36,15 +36,26 @@ const DEVICES = [
     }
 ];
 
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
-const devices = express.Router();
+const devicesRoutes = express.Router();
 
-devices.get('/', (req, res) => {
+const findDeviceById = id => DEVICES.find(d => d.id == id);
+
+devicesRoutes.get('/:id', (req, res) => {
+    const DEVICE = findDeviceById(req.params.id);
+    if (DEVICE) {
+        res.status(200).json(DEVICE);
+    } else {
+        res.status(404).json({});
+    }
+});
+
+devicesRoutes.get('/', (req, res) => {
     res.status(200).json(DEVICES);
 });
 
-const { v4: uuidv4 } = require('uuid');
-devices.post('/', (req, res) => {
+devicesRoutes.post('/', (req, res) => {
     const DEVICE = {
         id: uuidv4(),
         ...req.body,
@@ -53,13 +64,7 @@ devices.post('/', (req, res) => {
     res.status(201).json(DEVICE);
 });
 
-devices.get('/:id', (req, res) => {
-    const DEVICE = DEVICES.find(d => d.id == req.params.id);
-    if (DEVICE) {
-        res.status(200).json(DEVICE);
-    } else {
-        res.status(404).json({});
-    }
-});
-
-module.exports = devices;
+module.exports = {
+    findDeviceById,
+    devicesRoutes
+};
