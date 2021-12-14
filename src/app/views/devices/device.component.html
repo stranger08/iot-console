@@ -2,7 +2,18 @@
     <div class="card-header">
         <h2>{{ device.name }}</h2>
     </div>
+
     <div class="card-body">
-        Nice!
+        <div class="row">
+            <div class="col-sm col-md">
+                {{ device.type }}
+                {{ device.registered }}
+            </div>
+            <div class="col-sm col-md">
+                <div class="chart-wrapper">
+                    <canvas #chartRef></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
