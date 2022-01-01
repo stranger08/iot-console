@@ -1,0 +1,99 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "iot-device-connector"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{port}/control",
+      "variables": {
+        "port": {
+          "default": "3000"
+        }
+      },
+      "description": "Local enviroment."
+    }
+  ],
+  "tags": [
+    {
+      "name": "IOT Device connector",
+      "description": "HTTP bridge between IOT devices and central management platform."
+    }
+  ],
+  "paths": {
+    "/control/exchange": {
+      "post": {
+        "tags": [
+          "IOT Device connector"
+        ],
+        "summary": "Data communication transaction between device and control platform",
+        "description": "Device sends its telemetry in short and regular time intervals. API responds with device instruction codes to alter device behavior.",
+        "operationId": "validateOnePurchaseRequest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/exchangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/exchangeResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type":"http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "exchangeRequest": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "exchangeResponse": {
+        "type": "object",
+        "properties": {
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

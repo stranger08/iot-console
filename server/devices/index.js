@@ -25,7 +25,33 @@ const DEVICES = [
         name: 'Guestroom temperature',
         registered: '2012/11/15',
         type: 'Thermostat',
-        status: 'Active'
+        status: 'Active',
+        data: [
+            {
+                "received": "2021-12-14T18:27:36.115Z",
+                "temp": 15
+            },
+            {
+                "received": "2021-12-14T18:27:38.814Z",
+                "temp": 12
+            },
+            {
+                "received": "2021-12-14T18:27:42.608Z",
+                "temp": 1
+            },
+            {
+                "received": "2021-12-14T18:27:47.748Z",
+                "temp": 10
+            },
+            {
+                "received": "2021-12-14T18:27:50.388Z",
+                "temp": 12
+            },
+            {
+                "received": "2021-12-14T18:27:52.737Z",
+                "temp": 13
+            }
+        ]
     },
     {
         id: "2421-1242-0923-9393",
@@ -37,6 +63,7 @@ const DEVICES = [
 ];
 
 const { v4: uuidv4 } = require('uuid');
+const ramda = require('ramda');
 const express = require('express');
 const devicesRoutes = express.Router();
 
@@ -56,12 +83,25 @@ devicesRoutes.get('/', (req, res) => {
 });
 
 devicesRoutes.post('/', (req, res) => {
-    const DEVICE = {
-        id: uuidv4(),
-        ...req.body,
+    const ID = ramda.path(['body', 'id'], req);
+
+    if (ID) {
+        let i = DEVICES.findIndex(d => d.id == ID);
+        if (i > -1) {
+            const DEVICE = DEVICES[i];
+            DEVICES[i] = ramda.mergeLeft(req.body, DEVICE);
+            res.status(201).json(DEVICES[i]);
+        } else {
+            res.status(404).json(`No device found with specified id: ${ID}`);
+        }
+    } else {
+        const DEVICE = {
+            id: uuidv4(),
+            ...req.body,
+        }
+        DEVICES.push(DEVICE);
+        res.status(201).json(DEVICE);
     }
-    DEVICES.push(DEVICE);
-    res.status(201).json(DEVICE);
 });
 
 module.exports = {

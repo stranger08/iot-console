@@ -24,7 +24,7 @@ const routes: Routes = [
                 component: DeviceComponent,
                 data: {
                     title: 'Device'
-                }
+                },
             },
             {
                 path: 'create',

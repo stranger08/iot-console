@@ -35,6 +35,10 @@ app.use('/control', passport.authenticate('auth', {session: false}), controlRout
 //  }
 app.use(require('serve-static')(__dirname + './../dist'));
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/device-bridge-swagger.json');
+app.use('/api-docs/device-bridge', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`)

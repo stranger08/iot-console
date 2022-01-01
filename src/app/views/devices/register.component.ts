@@ -11,7 +11,7 @@ export class RegisterDeviceComponent {
 
   constructor(
     private router: Router,
-    private devicesSerivce: DevicesService
+    private devicesService: DevicesService
   ) { }
 
   deviceForm = new FormGroup({
@@ -22,7 +22,7 @@ export class RegisterDeviceComponent {
   
   onSubmit() {
     console.log(this.deviceForm.value);
-    this.devicesSerivce.saveOne({
+    this.devicesService.saveOne({
       ...this.deviceForm.value,
       registered: new Date(),
       status: "Active",
@@ -30,7 +30,6 @@ export class RegisterDeviceComponent {
       console.log(resp);
       this.router.navigate(['devices']);
     });
-    
   }
 
   cancel() {

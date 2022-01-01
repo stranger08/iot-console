@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 import { DevicesService } from '../../services/devices.service';
 import * as Chart from 'chart.js';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     templateUrl: 'device.component.html',
@@ -11,8 +11,8 @@ import * as Chart from 'chart.js';
 export class DeviceComponent {
 
   constructor(
-    private titleService: Title,
     private route: ActivatedRoute,
+    private formBuilder : FormBuilder,
     private devicesService: DevicesService,
   ) {
 
@@ -27,8 +27,6 @@ export class DeviceComponent {
         {
           gridLines: {
             display: true,
-            color: '#dfe3e6',
-            zeroLineColor: '#dfe3e6'
           },
           ticks: {
             callback: function(val, index) {
@@ -41,8 +39,6 @@ export class DeviceComponent {
         {
           gridLines: {
             display: true,
-            color: '#dfe3e6',
-            zeroLineColor: '#dfe3e6'
           }
         }
       ]
@@ -58,9 +54,16 @@ export class DeviceComponent {
   };
 
   private device:any = {};
+  deviceForm : FormGroup;
 
   ngOnInit() {
-    
+    this.deviceForm = this.formBuilder.group({
+      automatedControls: this.formBuilder.array([]),
+    });
+  }
+
+  get automatedControls() {
+    return this.deviceForm.get('automatedControls') as FormArray;
   }
 
   ngAfterViewInit() {
@@ -69,23 +72,59 @@ export class DeviceComponent {
 
       this.devicesService.findOne(ID).subscribe(resp => {
         this.device = resp;
+        this.device.automatedControls?.forEach(ac => {
+          this.automatedControls.push(this.formBuilder.group({
+            condition: [ac.condition],
+            action: [ac.action],
+            threshhold: [ac.threshhold],
+          }));
+        });
 
         this.route.data.subscribe(data => {
           data.title = resp['name'];
         });
-        console.log(this.device.data.map(d => {return {x: d.received, y: d.temp}}));
 
-        this.chart = new Chart(this.chartRef.nativeElement, {
-          type: 'line',
-          options: this.lineChartOptions,
-          
-          data: {
-            labels: this.device.data.map(d => d.received),
-            datasets: [
-            {data: this.device.data.map(d => d.temp), label: 'Temperature'},
-          ]}
-        });
+        if (this.device.data) {
+          this.chart = new Chart(this.chartRef.nativeElement, {
+            type: 'line',
+            options: this.lineChartOptions,
+            
+            data: {
+              labels: this.device.data.map(d => d.received),
+              datasets: [{
+                  data: this.device.data.map(d => d.temp),
+                  label: 'Temperature',
+                  borderColor: '#2c5dc7',
+                  backgroundColor: 'rgba(147, 170, 219, 0.1)'
+              }]
+            }
+          });
+        }
       });
+    });
+  }
+
+  addControl() {
+    this.automatedControls.push(this.formBuilder.group({
+      condition: ['Temperature above'],
+      action: ['Switch off'],
+      threshhold: ['20'],
+    }));
+    this.deviceForm.markAsDirty();
+  }
+
+  removeControl(index) {
+    this.automatedControls.removeAt(index);
+    this.deviceForm.markAsDirty();
+  }
+
+  save() {
+    this.devicesService.saveOne({
+      id: this.device.id,
+      automatedControls: this.automatedControls.value,
+    }).subscribe(resp => {
+      this.device = resp;
+      this.automatedControls.markAsPristine();
     });
   }
 
