@@ -1,51 +1,20 @@
-const USERS = [
-    {
-        id: "0000-0000-0000-0001",
-        email: 'admin',
-        password: 'test',
-        registered: '2012/11/15',
-        role: 'Admin',
-        status: 'Active'
-    },
-    {
-        id: "0000-0000-0000-0002",
-        email: 'test@test.com',
-        password: 'test',
-        registered: '2012/11/15',
-        type: 'Thermostat',
-        role: 'User',
-        status: 'Active'
-    },
-    {
-        id: "0000-0000-0000-0003",
-        email: 'test3@test.com',
-        password: 'test',
-        registered: '2012/11/15',
-        role: 'User',
-        status: 'Locked'
-    },
-];
-
 const express = require('express');
 const usersRoutes = express.Router();
+const usersService = require('./service');
 
-usersRoutes.get('/', (req, res) => {
+usersRoutes.get('/', async (req, res) => {
+    const USERS = await usersService.findAll();
     res.status(200).json(USERS);
 });
 
-const { v4: uuidv4 } = require('uuid');
-
-usersRoutes.post('/', (req, res) => {
-    const USER = {
-        id: uuidv4(),
-        ...req.body,
-    }
-    USERS.push(USER);
+usersRoutes.post('/', async (req, res) => {
+    const USER = usersService.create(req.body);
     res.status(201).json(USER);
 });
 
 usersRoutes.get('/:email', (req, res) => {
-    const USER = USERS.find(u => u.email == req.params.email);
+    const EMAIL = ramda.path(['params', 'email'], req);
+    const USER = usersService.findByEmail(EMAIL);
     if (USER) {
         res.status(200).json(USER);
     } else {
@@ -55,5 +24,5 @@ usersRoutes.get('/:email', (req, res) => {
 
 module.exports = {
     usersRoutes,
-    USERS
+    usersService,
 };

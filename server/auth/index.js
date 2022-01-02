@@ -4,12 +4,12 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 
 const { SECRET } = require('./token');
-const { USERS } = require('./../users');
+const { usersService } = require('./../users');
 
 passport.use('login', new LocalStrategy(
-  (username, password, done) => {
+  async (username, password, done) => {
     
-    const USER = USERS.find(u => u.email == username);
+    const USER = await usersService.findByEmail(username);
 
     if (!USER) {
       return done(null, false);

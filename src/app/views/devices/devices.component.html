@@ -22,7 +22,7 @@
                   <tbody >
                     <tr *ngFor="let device of devices" (click)="viewDevice(device.id)">
                         <td>{{ device.name }}</td>
-                        <td>{{ device.registered }}</td>
+                        <td>{{ device.registeredAt }}</td>
                         <td>{{ device.type }}</td>
                         <td>
                             <span class="badge"

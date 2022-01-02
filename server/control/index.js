@@ -1,25 +1,26 @@
+const ramda = require('ramda');
 const express = require('express');
 const controlRoutes = express.Router();
 
-const { findDeviceById } = require('../devices');
+const { devicesService } = require('../devices');
 
-controlRoutes.post('/exchange', (req, res) => {
+controlRoutes.post('/exchange', async (req, res) => {
 
-    const DEVICE_ID = req.body.deviceId;
+    const DEVICE_ID = ramda.path(['body', 'deviceId'], req);
 
     if (!DEVICE_ID) {
         res.status(400).json({'status': 'Device ID required.'});
         return;
     }
 
-    const DATA = req.body.data;
+    const DATA = ramda.path(['body', 'data'], req);
 
     if (!DATA) {
         res.status(400).json({'status': 'Incoming data required.'});
         return;
     }
 
-    const DEVICE = findDeviceById(DEVICE_ID);
+    let DEVICE = await devicesService.findById(DEVICE_ID);
 
     if (!DEVICE) {
         res.status(400).json({'status': 'Device ID is not registered at the system.'});
@@ -34,6 +35,10 @@ controlRoutes.post('/exchange', (req, res) => {
         received: new Date(),
         ...DATA,
     });
+
+    DEVICE = await devicesService.update(DEVICE);
+
+    console.log(`Data exchange transaction completed for the device ${DEVICE_ID}`);
 
     res.status(200).json({
         commands: [],

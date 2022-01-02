@@ -22,7 +22,7 @@
                   <tbody >
                     <tr *ngFor="let user of users" (click)="viewUser(user.id)">
                         <td>{{ user.email }}</td>
-                        <td>{{ user.registered }}</td>
+                        <td>{{ user.registeredAt }}</td>
                         <td>{{ user.role }}</td>
                         <td>
                             <span class="badge"

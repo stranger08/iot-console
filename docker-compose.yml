@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - local
+    ports: 
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db-data:
+
+networks:
+  local:

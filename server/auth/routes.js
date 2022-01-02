@@ -1,5 +1,6 @@
+const ramda = require('ramda');
 const token = require('./token');
-const { USERS } = require('./../users/');
+const { usersService } = require('./../users/');
 
 const login = (req, res) => {
     res.status(200).json({
@@ -7,9 +8,9 @@ const login = (req, res) => {
     });
 };
 
-const register = (req, res) => {
+const register = async (req, res) => {
 
-    const EMAIL = req.body.email;
+    const EMAIL = ramda.path(['body', 'email'], req);
 
     if (!EMAIL) {
         res.status(400).json({
@@ -18,7 +19,7 @@ const register = (req, res) => {
         return;
     }
 
-    const EXISTING_USER = USERS.find(u => u.email == EMAIL);
+    const EXISTING_USER = await usersService.findByEmail(EMAIL);
 
     if (EXISTING_USER) {
         res.status(200).json({
@@ -27,14 +28,7 @@ const register = (req, res) => {
         return;
     }
 
-    const USER = {
-        ...req.body,
-        role: 'User',
-        registered: new Date(),
-        status: "Active",
-    }
-
-    USERS.push(USER);
+    const USER = await usersService.create(req.body);
 
     res.status(200).json(USER);
 }

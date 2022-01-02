@@ -72,7 +72,7 @@ export class DeviceComponent {
 
       this.devicesService.findOne(ID).subscribe(resp => {
         this.device = resp;
-        this.device.automatedControls?.forEach(ac => {
+        this.device.controls?.forEach(ac => {
           this.automatedControls.push(this.formBuilder.group({
             condition: [ac.condition],
             action: [ac.action],
@@ -90,7 +90,7 @@ export class DeviceComponent {
             options: this.lineChartOptions,
             
             data: {
-              labels: this.device.data.map(d => d.received),
+              labels: this.device.data?.map(d => d.received),
               datasets: [{
                   data: this.device.data.map(d => d.temp),
                   label: 'Temperature',
@@ -121,8 +121,9 @@ export class DeviceComponent {
   save() {
     this.devicesService.saveOne({
       id: this.device.id,
-      automatedControls: this.automatedControls.value,
+      controls: this.automatedControls.value,
     }).subscribe(resp => {
+      console.log(resp);
       this.device = resp;
       this.automatedControls.markAsPristine();
     });
