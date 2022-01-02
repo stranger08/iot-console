@@ -3,6 +3,7 @@ const express = require('express');
 const devicesRoutes = express.Router();
 
 const devicesService = require('./service');
+const { usersService } = require('../users');
 
 devicesRoutes.get('/:id', async (req, res) => {
     const ID = ramda.path(['params', 'id'], req);
@@ -15,7 +16,8 @@ devicesRoutes.get('/:id', async (req, res) => {
 });
 
 devicesRoutes.get('/', async (req, res) => {
-    const DEVICES = await devicesService.findAll();
+    const USER_ID = ramda.path(['user', 'id'], req);
+    const DEVICES = await devicesService.findAllByUserId(USER_ID);
     res.status(200).json(DEVICES);
 });
 
@@ -33,10 +35,11 @@ devicesRoutes.post('/', async (req, res) => {
             res.status(404).json(`No device found with specified id: ${ID}`);
         }
     } else {
-        const DEVICE = await devicesService.create(DEVICE_PAYLOAD);
+        const USER_ID = ramda.path(['user', 'id'], req);
+        const DEVICE = await devicesService.create(USER_ID, DEVICE_PAYLOAD);
         res.status(201).json(DEVICE);
     }
-});
+})
 
 module.exports = {
     devicesRoutes,

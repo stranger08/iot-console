@@ -1,3 +1,4 @@
+const ramda = require('ramda');
 const passport = require('passport');
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -29,9 +30,16 @@ passport.use('auth', new JwtStrategy({
     secretOrKey: SECRET,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   },
-    (payload, done) => {
+    async (payload, done) => {
       console.log(`Authorize ${payload.username} by jwt.`);
-      return done(null, payload)
+      const USER_NAME = ramda.path(['username'], payload);
+      const USER_ENTITY = await usersService.findByEmail(USER_NAME);
+      const USER_ID = ramda.path(['id'], USER_ENTITY);
+      const USER_CONTEXT = {
+        id: USER_ID,
+        ...payload,
+      };
+      return done(null, USER_CONTEXT);
     }
   )
 );
