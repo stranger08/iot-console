@@ -13,79 +13,120 @@
         </div>
         <div class="row">
             <div class="col-sm col-md">
-                Type: {{ device.type }}. Registered {{ device.registeredAt }}.
+                Device ID: {{ device.id }}. Type: {{ device.type }}. Registered {{ device.registeredAt }}.
             </div>
         </div>
     </div>
 </div>
 
-<div class="card-columns cols-2">
-    <div class="card">
-        <div class="card-header">
-            <h2>Automated control definitions</h2>
-        </div>
-
-        <div class="card-body">
-
-            <form [formGroup]="deviceForm" (ngSubmit)="2;">
-
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label>Condition</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label>Threshhold</label>
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label>Action</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label>&nbsp;</label>
-                    </div>
+<div class="card-columns cols-2 row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Telemetry definitions</h2>
                 </div>
-
-                <div formArrayName="automatedControls">
-                    <div *ngFor="let automatedControl of automatedControls.controls; let i = index">
-                        <div class="row" [formGroup]="automatedControl">
-                            <div class="form-group col-sm-4">
-                                <select class="form-control" id="condition" formControlName="condition">
-                                    <option>Temparature below</option>
-                                    <option>Temperature above</option>
-                                </select>
+        
+                <div class="card-body">
+        
+                    <form [formGroup]="deviceForm" (ngSubmit)="0;">
+        
+                        <div *ngIf="telemetryConfiguration.controls?.length > 0" class="row">
+                            <div class="col-sm-4">
+                                <label>Name</label>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="threshhold" placeholder="123" formControlName="threshhold">
-                                </div>
+                            <div class="col-sm-4">
+                                <label>Attribute</label>
                             </div>
-                            <div class="form-group col-sm-4">
-                                <select class="form-control" id="action" formControlName="action">
-                                    <option>Switch on</option>
-                                    <option>Switch off</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-outline-danger" (click)="removeControl(i)">Remove</button>
+                            <div class="col-sm-4">
+                                <label>&nbsp;</label>
                             </div>
                         </div>
-                    </div>
+        
+                        <div formArrayName="telemetryConfiguration">
+                            <div *ngFor="let telemetrySetting of telemetryConfiguration.controls; let i = index">
+                                <div class="row" [formGroup]="telemetrySetting">
+                                    <div class="form-group col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="name" placeholder="123" formControlName="name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="path" placeholder="123" formControlName="path">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-outline-danger" (click)="removeTelemetry(i)">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-primary btn-block" (click)="addTelemetry()">Add</button>
+                    <button *ngIf="telemetryConfiguration.dirty" type="button"  class="btn btn-outline-primary btn-block" (click)="saveTelemetryConfiguration()">Save changes</button>
                 </div>
-            </form>
-            <button type="button" class="btn btn-primary btn-block" (click)="addControl()">Add</button>
-            <button *ngIf="deviceForm.dirty" type="button"  class="btn btn-outline-primary btn-block" (click)="save()">Save changes</button>
+            </div>
         </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Device Settings</h2>
+                </div>
+            
+                <div class="card-body">
+                    <form [formGroup]="deviceForm" (ngSubmit)="0;">
+        
+                        <div *ngIf="settingsConfiguration.controls?.length > 0" class="row">
+                            <div class="col-sm-4">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Attribute</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>&nbsp;</label>
+                            </div>
+                        </div>
+        
+                        <div formArrayName="settingsConfiguration">
+                            <div *ngFor="let setting of settingsConfiguration.controls; let i = index">
+                                <div class="row" [formGroup]="setting">
+                                    <div class="form-group col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="name" placeholder="123" formControlName="name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="path" placeholder="123" formControlName="path">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-outline-danger" (click)="removeSetting(i)">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-primary btn-block" (click)="addSetting()">Add</button>
+                    <button *ngIf="settingsConfiguration.dirty" type="button"  class="btn btn-outline-primary btn-block" (click)="saveSettingsConfiguration()">Save changes</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h2>Log</h2>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <h2>Log</h2>
-        </div>
-    
-        <div class="card-body">
-            <div class="row">
-                Here will be a log of all exchanged messages.
-            </div>
+    <div class="card-body">
+        <div class="row">
+            Here will be a log of all exchanged messages.
         </div>
     </div>
 </div>
+
 

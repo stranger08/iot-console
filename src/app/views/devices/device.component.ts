@@ -58,12 +58,17 @@ export class DeviceComponent {
 
   ngOnInit() {
     this.deviceForm = this.formBuilder.group({
-      automatedControls: this.formBuilder.array([]),
+      telemetryConfiguration: this.formBuilder.array([]),
+      settingsConfiguration: this.formBuilder.array([]),
     });
   }
 
-  get automatedControls() {
-    return this.deviceForm.get('automatedControls') as FormArray;
+  get telemetryConfiguration() {
+    return this.deviceForm.get('telemetryConfiguration') as FormArray;
+  }
+
+  get settingsConfiguration() {
+    return this.deviceForm.get('settingsConfiguration') as FormArray;
   }
 
   ngAfterViewInit() {
@@ -72,11 +77,17 @@ export class DeviceComponent {
 
       this.devicesService.findOne(ID).subscribe(resp => {
         this.device = resp;
-        this.device.controls?.forEach(ac => {
-          this.automatedControls.push(this.formBuilder.group({
-            condition: [ac.condition],
-            action: [ac.action],
-            threshhold: [ac.threshhold],
+        this.device.telemetry?.forEach(t => {
+          this.telemetryConfiguration.push(this.formBuilder.group({
+            name: [t.name],
+            path: [t.path],
+          }));
+        });
+
+        this.device.settings?.forEach(s => {
+          this.settingsConfiguration.push(this.formBuilder.group({
+            name: [s.name],
+            path: [s.path],
           }));
         });
 
@@ -104,29 +115,51 @@ export class DeviceComponent {
     });
   }
 
-  addControl() {
-    this.automatedControls.push(this.formBuilder.group({
-      condition: ['Temperature above'],
-      action: ['Switch off'],
-      threshhold: ['20'],
+  addTelemetry() {
+    this.telemetryConfiguration.push(this.formBuilder.group({
+      name: ['new name'],
+      path: ['new path'],
     }));
-    this.deviceForm.markAsDirty();
+    this.telemetryConfiguration.markAsDirty();
   }
 
-  removeControl(index) {
-    this.automatedControls.removeAt(index);
-    this.deviceForm.markAsDirty();
+  removeTelemetry(index) {
+    this.telemetryConfiguration.removeAt(index);
+    this.telemetryConfiguration.markAsDirty();
   }
 
-  save() {
+  addSetting() {
+    this.settingsConfiguration.push(this.formBuilder.group({
+      name: ['new name'],
+      path: ['new path'],
+    }));
+    this.settingsConfiguration.markAsDirty();
+  }
+
+  removeSetting(index) {
+    this.settingsConfiguration.removeAt(index);
+    this.settingsConfiguration.markAsDirty();
+  }
+
+  saveTelemetryConfiguration() {
     this.devicesService.saveOne({
       id: this.device.id,
-      controls: this.automatedControls.value,
+      telemetry: this.telemetryConfiguration.value
     }).subscribe(resp => {
       console.log(resp);
       this.device = resp;
-      this.automatedControls.markAsPristine();
+      this.telemetryConfiguration.markAsPristine();
     });
   }
 
+  saveSettingsConfiguration() {
+    this.devicesService.saveOne({
+      id: this.device.id,
+      settings: this.settingsConfiguration.value
+    }).subscribe(resp => {
+      console.log(resp);
+      this.device = resp;
+      this.settingsConfiguration.markAsPristine();
+    });
+  }
 }

@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS "devices" (
     "type" VARCHAR(20),
     "status" VARCHAR(20),
     "data" JSONB,
-    "controls" JSONB,
+    "telemetry" JSONB,
+    "settings" JSONB,
     PRIMARY KEY ("id"),
     CONSTRAINT fk_user
       FOREIGN KEY(user_id) 

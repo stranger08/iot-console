@@ -58,7 +58,8 @@ const update = async (device) => {
         update devices set
             name = ${ device.name },
             data = ${ sql.json(device.data)},
-            controls = ${ sql.json(device.controls)}
+            telemetry = ${ sql.json(device.telemetry) },
+            settings = ${ sql.json(device.settings) }
             where id = ${ ID }
         returning *`;
 
