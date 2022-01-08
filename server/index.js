@@ -19,12 +19,14 @@ app.post('/register', register);
 
 // domain specific routers
 const { usersRoutes} = require('./users');
+const { groupsRoutes } = require('./groups');
 const { devicesRoutes } = require('./devices');
 const { controlRoutes } = require('./control');
 
 app.use('/users', passport.authenticate('auth', {session: false}), usersRoutes);
+app.use('/groups', passport.authenticate('auth', {session: false}), groupsRoutes);
 app.use('/devices', passport.authenticate('auth', {session: false}), devicesRoutes);
-app.use('/control', passport.authenticate('auth', {session: false}), controlRoutes);
+app.use('/control', controlRoutes);// TODO api key authentication strategy
 
 
 // TODO:

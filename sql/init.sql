@@ -29,3 +29,14 @@ CREATE TABLE IF NOT EXISTS "devices" (
       FOREIGN KEY(user_id) 
 	  REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS "groups" (
+    "id" SERIAL,
+    "user_id" INT,
+    "name" VARCHAR(255) NOT NULL,
+    "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+    PRIMARY KEY ("id"),
+    CONSTRAINT fk_user
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id)
+);

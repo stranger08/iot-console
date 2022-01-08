@@ -23,5 +23,8 @@
     "postgres": "^1.0.2",
     "swagger-ui-express": "^4.3.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "got": "^11.8.3"
   }
 }

@@ -12,21 +12,31 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Inventory'
+    name: 'Inventory',
+    attributes: { user: true },
   },
   {
     name: 'Devices',
     url: '/devices',
-    icon: 'cil-router'
+    icon: 'cil-router',
+    attributes: { user: true },
+  },
+  {
+    name: 'Device Groups',
+    url: '/groups',
+    icon: 'cil-object-ungroup',
+    attributes: { user: true },
   },
   {
     title: true,
-    name: 'Administration'
+    name: 'Administration',
+    attributes: { user: true },
   },
   {
     name: 'Users',
     url: '/users',
-    icon: 'cil-router'
+    icon: 'cil-router',
+    attributes: { user: true },
   },
   {
     title: true,

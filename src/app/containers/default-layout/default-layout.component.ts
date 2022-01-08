@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { INavData } from '@coreui/angular';
 import { navItems } from '../../_nav';
 import { SessionService } from '../../services/session.service';
 
@@ -8,7 +8,7 @@ import { SessionService } from '../../services/session.service';
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
-export class DefaultLayoutComponent {
+export class DefaultLayoutComponent implements OnInit {
 
   constructor (
     private router: Router,
@@ -17,10 +17,15 @@ export class DefaultLayoutComponent {
   }
 
   public sidebarMinimized = false;
-  public navItems = navItems;
+  public navItems:INavData[];
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;
+  }
+
+  ngOnInit() {
+    this.navItems = navItems;
+    //this.navItems = navItems.filter(n => n.attributes?.user);
   }
 
   logout() {
