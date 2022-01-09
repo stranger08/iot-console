@@ -22,8 +22,7 @@ export class GroupComponent {
       const ID = params['id'];
 
       this.groupsService.findOne(ID).subscribe(resp => {
-        this.group = resp;
-
+        console.log(resp);
         this.route.data.subscribe(data => {
           data.title = resp['name'];
         });

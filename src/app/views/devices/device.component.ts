@@ -2,7 +2,9 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DevicesService } from '../../services/devices.service';
+import { GroupsService  } from '../../services/groups.service';
 import * as Chart from 'chart.js';
+import * as ramda from 'ramda';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -13,6 +15,7 @@ export class DeviceComponent {
   constructor(
     private route: ActivatedRoute,
     private formBuilder : FormBuilder,
+    private groupsService: GroupsService,
     private devicesService: DevicesService,
   ) {
 
@@ -54,6 +57,7 @@ export class DeviceComponent {
   };
 
   private device:any = {};
+  private group:any = {};
   deviceForm : FormGroup;
 
   ngOnInit() {
@@ -94,6 +98,11 @@ export class DeviceComponent {
         this.route.data.subscribe(data => {
           data.title = resp['name'];
         });
+
+        const GROUP_ID = ramda.path(['id'], this.device);
+        this.groupsService.findOne(GROUP_ID).subscribe(group => {
+          this.group = group;
+        })
 
         if (this.device.data) {
           this.chart = new Chart(this.chartRef.nativeElement, {

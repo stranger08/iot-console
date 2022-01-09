@@ -16,9 +16,9 @@ groupsRoutes.post('/', async (req, res) => {
     res.status(201).json(GROUP);
 });
 
-groupsRoutes.get('/:id', (req, res) => {
+groupsRoutes.get('/:id', async (req, res) => {
     const ID = ramda.path(['params', 'id'], req);
-    const GROUP = groupsService.findById(ID);
+    const GROUP = await groupsService.findById(ID);
     if (GROUP) {
         res.status(200).json(GROUP);
     } else {

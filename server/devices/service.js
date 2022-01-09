@@ -34,13 +34,14 @@ const findAllByUserId = async (userId) => {
 const create = async (userId, device) => {
     const NAME = ramda.path(['name'], device);
     const TYPE = ramda.path(['type'], device);
+    const GROUP = ramda.path(['group'], device);
     const STATUS = ramda.pathOr('Active', ['status'], device);
 
     const [new_device] = await sql`
         insert into devices (
-            user_id, name, "registeredAt", type, status
+            user_id, group_id, name, "registeredAt", type, status
         ) values (
-            ${ userId }, ${NAME}, now(), ${TYPE}, ${STATUS}
+            ${userId}, ${GROUP}, ${NAME}, now(), ${TYPE}, ${STATUS}
         )
         returning *`
     

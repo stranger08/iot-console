@@ -28,6 +28,7 @@ export class DevicesComponent {
 
     ngOnInit() {
         this.devicesService.findMany().subscribe(resp => {
+            console.log(resp);
             this.devices = resp;
         });
     }

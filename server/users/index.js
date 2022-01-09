@@ -12,9 +12,9 @@ usersRoutes.post('/', async (req, res) => {
     res.status(201).json(USER);
 });
 
-usersRoutes.get('/:email', (req, res) => {
+usersRoutes.get('/:email', async (req, res) => {
     const EMAIL = ramda.path(['params', 'email'], req);
-    const USER = usersService.findByEmail(EMAIL);
+    const USER = await usersService.findByEmail(EMAIL);
     if (USER) {
         res.status(200).json(USER);
     } else {

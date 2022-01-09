@@ -26,6 +26,14 @@
               </div>
             </div>
             <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="select1">Select device group</label>
+              <div class="col-md-9">
+                <select formControlName="group" id="group" name="group" class="form-control" >
+                  <option *ngFor="let group of groups" value="{{ group.id }}">{{ group.name }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
               <label class="col-md-3 col-form-label" for="text-input">Device MAC</label>
               <div class="col-md-9">
                 <input formControlName="mac" type="text" id="text-input" name="text-input" class="form-control" placeholder="MAC" >

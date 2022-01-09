@@ -3,7 +3,7 @@ const express = require('express');
 const devicesRoutes = express.Router();
 
 const devicesService = require('./service');
-const { usersService } = require('../users');
+const groupsService = require('../groups/service');
 
 devicesRoutes.get('/:id', async (req, res) => {
     const ID = ramda.path(['params', 'id'], req);
@@ -18,7 +18,17 @@ devicesRoutes.get('/:id', async (req, res) => {
 devicesRoutes.get('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
     const DEVICES = await devicesService.findAllByUserId(USER_ID);
-    res.status(200).json(DEVICES);
+    const RET_VAL = [];
+
+    for (let device of DEVICES) {
+        let group_id = ramda.path(['group_id'], device);
+        let group = await groupsService.findById(group_id);
+        RET_VAL.push({
+            ...device,
+            group,
+        });
+    }
+    res.status(200).json(RET_VAL);
 });
 
 devicesRoutes.post('/', async (req, res) => {

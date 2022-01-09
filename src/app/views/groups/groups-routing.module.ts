@@ -9,7 +9,7 @@ const routes: Routes = [
     {
         path: '',
         data: {
-            title: 'Users'
+            title: 'Groups'
         },
         children: [
             {
@@ -23,7 +23,7 @@ const routes: Routes = [
                 path: 'view/:id',
                 component: GroupComponent,
                 data: {
-                    title: 'User'
+                    title: 'Group'
                 }
             },
             {

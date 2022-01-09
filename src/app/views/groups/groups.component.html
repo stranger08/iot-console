@@ -1,50 +1,44 @@
 <div class="animated fadeIn">
-    <!--/.row-->
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-sm-6 col-md-6" *ngFor="let group of groups" (click)="viewGroup(group.id)">
         <div class="card">
           <div class="card-header">
-            <i class="fa fa-align-justify"></i> Device Groups
+            <h2>{{ group.name }}</h2>
           </div>
           <div class="card-body">
-            <div class="col-6 col-sm-4 col-md-2 col-xl mb-3">
-              <button type="button" class="btn btn-primary" (click)="addGroup()">Add</button>
-            </div>
-            <table class="table table-bordered table-striped table-sm table-hover-custom">
-                <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Name</th>
-                      <th>Name</th>
-                      <th>Name</th>
-                    </tr>
-                  </thead>
-                  <tbody >
-                    <tr *ngFor="let group of groups" (click)="viewGroup(group.id)">
-                        <td>{{ group.name }}</td>
-                        <td>{{ group.name }}</td>
-                        <td>{{ group.name }}</td>
-                        <td>{{ group.name }}</td>
-                    </tr>
-                  </tbody>
-            </table>
-            <nav>
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-              </ul>
-            </nav>
+            <table *ngIf="group.devices?.length > 0" class="table table-bordered table-striped table-sm table-hover-custom">
+              <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Registered</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <tr *ngFor="let device of group.devices">
+                      <td>{{ device.name }}</td>
+                      <td>{{ device.registeredAt }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p *ngIf="group.devices?.length == 0">
+                No devices in the group yet
+              </p>
           </div>
         </div>
-      </div>
-      <!--/.col-->
-    </div>
-    <!--/.row-->
+      </div><!--/.col-->
+
+      <div class="col-sm-6 col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h2>Add new device group</h2>
+          </div>
+          <div class="card-body">
+            <div class="col-6 col-sm-4 col-md-6 col-xl mb-3">
+              <button type="button" class="btn btn-primary" (click)="addGroup()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div><!--/.col-->
+    </div><!--/.row-->
   </div>
   

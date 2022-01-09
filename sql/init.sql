@@ -18,6 +18,7 @@ INSERT INTO public."users"("email", "password", "registeredAt", "role", "status"
 CREATE TABLE IF NOT EXISTS "devices" (
     "id" SERIAL,
     "user_id" INT,
+    "group_id" INT,
     "name" VARCHAR(255) NOT NULL,
     "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
     "type" VARCHAR(20),

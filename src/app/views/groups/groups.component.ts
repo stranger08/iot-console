@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { GroupsService } from '../../services/groups.service';
+import { DevicesService } from '../../services/devices.service';
 
 @Component({
     templateUrl: 'groups.component.html',
@@ -9,8 +10,10 @@ import { GroupsService } from '../../services/groups.service';
 export class GroupsComponent {
 
     groups:any = [];
+    devices:any = [];
 
     constructor(
+        private devicesService: DevicesService,
         private groupsService: GroupsService,
         private route: ActivatedRoute,
         private router: Router
@@ -27,8 +30,15 @@ export class GroupsComponent {
     }
 
     ngOnInit() {
-        this.groupsService.findMany().subscribe(resp => {
-            this.groups = resp;
+        this.groupsService.findMany().subscribe(groups => {
+            this.groups = groups;
+        });
+
+        this.devicesService.findMany().subscribe(devices => {
+            this.devices = devices;
+            this.groups.forEach(group => {
+                group.devices = this.devices.filter(d => d.group_id == group.id)
+            });
         });
     }
 }
