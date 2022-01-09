@@ -67,10 +67,26 @@ const update = async (device) => {
     return RESULT.length == 1 ? RESULT[0] : undefined;
 }
 
+const deleteById = async (id) => {
+    const RESULT = await sql`
+        delete from devices
+        where id = ${ id }`;
+
+    const COUNT = ramda.path(['count'], RESULT);
+
+    if (COUNT == 1) {
+        return id;
+    } else if (COUNT == 0) {
+        console.log(`GroupsService group with id ${id} not found.`);
+        return undefined;
+    }
+}
+
 module.exports = {
     create,
     findAll,
     findById,
+    deleteById,
     findAllByUserId,
     update,
 }

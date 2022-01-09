@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import { DevicesService } from '../../services/devices.service';
 
@@ -7,6 +8,8 @@ import { DevicesService } from '../../services/devices.service';
     templateUrl: 'devices.component.html',
 })
 export class DevicesComponent {
+
+    @ViewChild('warningModal') public warningModal: ModalDirective;
 
     devices:any = [];
 
@@ -27,9 +30,26 @@ export class DevicesComponent {
     }
 
     ngOnInit() {
-        this.devicesService.findMany().subscribe(resp => {
-            console.log(resp);
-            this.devices = resp;
+        this.retrieveDeviceList();
+    }
+
+    retrieveDeviceList() {
+        this.devicesService.findMany().subscribe(devices => {
+            this.devices = devices;
+        });
+    }
+
+    removeDeviceConfirm(id) {
+        this.removeDeviceId = id;
+        this.warningModal.show();
+    }
+
+    removeDeviceId:any;
+
+    removeDevice() {
+        this.devicesService.deleteOne(this.removeDeviceId).subscribe(r => {
+            this.warningModal.hide();
+            this.retrieveDeviceList();
         });
     }
 }

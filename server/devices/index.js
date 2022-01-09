@@ -49,7 +49,17 @@ devicesRoutes.post('/', async (req, res) => {
         const DEVICE = await devicesService.create(USER_ID, DEVICE_PAYLOAD);
         res.status(201).json(DEVICE);
     }
-})
+});
+
+devicesRoutes.delete('/:id', async (req, res) => {
+    const ID = ramda.path(['params', 'id'], req);
+    const RESULT = await devicesService.deleteById(ID);
+    if (RESULT) {
+        res.status(200).json({id:ID});
+    } else {
+        res.status(404).json({});
+    }
+});
 
 module.exports = {
     devicesRoutes,

@@ -1,9 +1,13 @@
 <div class="animated fadeIn">
     <div class="row">
-      <div class="col-sm-6 col-md-6" *ngFor="let group of groups" (click)="viewGroup(group.id)">
+      <div class="col-sm-6 col-md-6" *ngFor="let group of groups">
         <div class="card">
-          <div class="card-header">
-            <h2>{{ group.name }}</h2>
+          <div class="card-header group-name-heading">
+            {{ group.name }}
+            <div class="card-header-actions" style="height: 21px;">
+              <button type="button" class="btn btn-outline-primary" (click)="viewGroup(group.id)">View</button>
+              <button type="button" class="btn btn-outline-danger" (click)="removeGroupConfirm(group.id)">Remove</button>
+            </div>
           </div>
           <div class="card-body">
             <table *ngIf="group.devices?.length > 0" class="table table-bordered table-striped table-sm table-hover-custom">
@@ -41,4 +45,24 @@
       </div><!--/.col-->
     </div><!--/.row-->
   </div>
+
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Confirm group delete</h4>
+        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to remove selected device group? Devices in the group will remain.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="warningModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger" (click)="removeGroup()">Confirm</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
   

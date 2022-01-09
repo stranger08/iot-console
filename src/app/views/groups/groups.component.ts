@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import { GroupsService } from '../../services/groups.service';
 import { DevicesService } from '../../services/devices.service';
 
 @Component({
     templateUrl: 'groups.component.html',
+    styleUrls: ['./groups.component.scss'],
 })
 export class GroupsComponent {
+
+    @ViewChild('warningModal') public warningModal: ModalDirective;
 
     groups:any = [];
     devices:any = [];
@@ -29,7 +33,25 @@ export class GroupsComponent {
         this.router.navigate(['create'], { relativeTo: this.route });
     }
 
+    removeGroupConfirm(id) {
+        this.removeGroupId = id;
+        this.warningModal.show();
+    }
+
+    removeGroupId:any;
+
+    removeGroup() {
+        this.groupsService.deleteOne(this.removeGroupId).subscribe(r => {
+            this.warningModal.hide();
+            this.retrieveDeviceGroups();
+        });
+    }
+
     ngOnInit() {
+        this.retrieveDeviceGroups();
+    }
+
+    retrieveDeviceGroups() {
         this.groupsService.findMany().subscribe(groups => {
             this.groups = groups;
         });

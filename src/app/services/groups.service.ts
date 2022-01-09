@@ -23,6 +23,11 @@ export class GroupsService extends BaseService {
     return this.http.get(REQUEST_URL, this.auth());
   }
 
+  deleteOne(id) {
+    const REQUEST_URL = `${this._hostUrl}/groups/${id}`;
+    return this.http.delete(REQUEST_URL, this.auth());
+  }
+
   saveOne(group) {
     const REQUEST_URL = `${this._hostUrl}/groups`;
     return this.http.post(REQUEST_URL, group, this.auth());

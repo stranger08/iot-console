@@ -28,4 +28,9 @@ export class DevicesService extends BaseService {
     return this.http.post(REQUEST_URL, device, this.auth());
   }
 
+  deleteOne(id) {
+    const REQUEST_URL = `${this._hostUrl}/devices/${id}`;
+    return this.http.delete(REQUEST_URL, this.auth());
+  }
+
 }

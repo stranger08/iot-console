@@ -18,9 +18,19 @@ groupsRoutes.post('/', async (req, res) => {
 
 groupsRoutes.get('/:id', async (req, res) => {
     const ID = ramda.path(['params', 'id'], req);
-    const GROUP = await groupsService.findById(ID);
+    const RESULT = await groupsService.findById(ID);
+    if (RESULT) {
+        res.status(200).json(RESULT);
+    } else {
+        res.status(404).json({});
+    }
+});
+
+groupsRoutes.delete('/:id', async (req, res) => {
+    const ID = ramda.path(['params', 'id'], req);
+    const GROUP = await groupsService.deleteById(ID);
     if (GROUP) {
-        res.status(200).json(GROUP);
+        res.status(200).json({id:ID});
     } else {
         res.status(404).json({});
     }

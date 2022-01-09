@@ -18,6 +18,21 @@ const findById = async (id) => {
     }
 }
 
+const deleteById = async (id) => {
+    const RESULT = await sql`
+        delete from groups
+        where id = ${ id }`;
+
+    const COUNT = ramda.path(['count'], RESULT);
+
+    if (COUNT == 1) {
+        return id;
+    } else if (COUNT == 0) {
+        console.log(`GroupsService group with id ${id} not found.`);
+        return undefined;
+    }
+}
+
 const findAll = async () => {
     return await sql`
         select *
@@ -49,5 +64,6 @@ module.exports = {
     create,
     findAll,
     findById,
+    deleteById,
     findAllByUserId,
 }

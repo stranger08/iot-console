@@ -10,7 +10,7 @@
             <div class="col-6 col-sm-4 col-md-2 col-xl mb-3">
               <button type="button" class="btn btn-primary" (click)="addDevice()">Add</button>
             </div>
-            <table class="table table-bordered table-striped table-sm table-hover-custom">
+            <table class="table table-bordered table-striped table-lg table-hover-custom">
                 <thead>
                     <tr>
                       <th>Device Name</th>
@@ -21,19 +21,13 @@
                     </tr>
                   </thead>
                   <tbody >
-                    <tr *ngFor="let device of devices" (click)="viewDevice(device.id)">
-                        <td>{{ device.name }}</td>
-                        <td>{{ device.group.name }}</td>
-                        <td>{{ device.registeredAt }}</td>
-                        <td>{{ device.type }}</td>
+                    <tr *ngFor="let device of devices">
+                        <td (click)="viewDevice(device.id)">{{ device.name }}</td>
+                        <td (click)="viewDevice(device.id)">{{ device.group?.name }}</td>
+                        <td (click)="viewDevice(device.id)">{{ device.registeredAt }}</td>
+                        <td (click)="viewDevice(device.id)">{{ device.type }}</td>
                         <td>
-                            <span class="badge"
-                            [ngClass]="{
-                                'badge-success' : device.status === 'Active',
-                                'badge-danger' : device.status === 'Error' || device.status === 'Unreachable' || device.status === 'Failed',
-                                'badge-secondary' : device.status === 'Inactive',
-                                'badge-warning' : device.status === 'Interruptions'
-                              }">{{ device.status }}</span>
+                          <button type="button" class="btn btn-lg- btn-ghost-danger" (click)="removeDeviceConfirm(device.id)">Delete</button>
                         </td>
                     </tr>
                   </tbody>
@@ -58,3 +52,23 @@
     <!--/.row-->
   </div>
   
+
+  <div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Confirm device delete</h4>
+          <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to remove selected device? Confirguration cannot be restored.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="warningModal.hide()">Close</button>
+          <button type="button" class="btn btn-danger" (click)="removeDevice()">Confirm</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
