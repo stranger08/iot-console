@@ -18,7 +18,7 @@
                   </tr>
                 </thead>
                 <tbody >
-                  <tr *ngFor="let device of group.devices">
+                  <tr *ngFor="let device of group.devices" (click)="viewDevice(device.id)">
                       <td>{{ device.name }}</td>
                       <td>{{ device.registeredAt }}</td>
                   </tr>

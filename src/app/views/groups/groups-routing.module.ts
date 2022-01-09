@@ -21,10 +21,10 @@ const routes: Routes = [
             },
             {
                 path: 'view/:id',
-                component: GroupComponent,
                 data: {
                     title: 'Group'
-                }
+                },
+                component: GroupComponent,
             },
             {
                 path: 'create',

@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { DevicesService } from '../../services/devices.service';
 import { GroupsService  } from '../../services/groups.service';
@@ -14,6 +14,7 @@ export class DeviceComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder : FormBuilder,
     private groupsService: GroupsService,
     private devicesService: DevicesService,
@@ -99,7 +100,7 @@ export class DeviceComponent {
           data.title = resp['name'];
         });
 
-        const GROUP_ID = ramda.path(['id'], this.device);
+        const GROUP_ID = ramda.path(['group_id'], this.device);
         this.groupsService.findOne(GROUP_ID).subscribe(group => {
           this.group = group;
         })
@@ -170,5 +171,9 @@ export class DeviceComponent {
       this.device = resp;
       this.settingsConfiguration.markAsPristine();
     });
+  }
+
+  viewGroup($id) {
+    this.router.navigate(['groups', 'view', $id]);
   }
 }

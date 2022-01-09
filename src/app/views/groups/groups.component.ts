@@ -29,6 +29,10 @@ export class GroupsComponent {
         this.router.navigate(['view', $id], { relativeTo: this.route });
     }
 
+    viewDevice($id) {
+        this.router.navigate(['devices', 'view', $id]);
+    }
+
     addGroup() {
         this.router.navigate(['create'], { relativeTo: this.route });
     }
