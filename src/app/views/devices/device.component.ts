@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -20,15 +20,9 @@ export class DeviceComponent {
     private groupsService: GroupsService,
     private devicesService: DevicesService,
   ) {
-
   }
 
-  @ViewChild('chartRef')
-  private chartRef: ElementRef;
-  private chart: Chart;
-
   public lineChartType = 'line';
-
   public lineChartOptions: any = {
     scales: {
       xAxes: [
@@ -110,23 +104,6 @@ export class DeviceComponent {
         });
 
         this.extractDeviceTelemetry();
-
-        // if (this.device.data) {
-        //   this.chart = new Chart(this.chartRef.nativeElement, {
-        //     type: 'line',
-        //     options: this.lineChartOptions,
-            
-        //     data: {
-        //       labels: this.device.data?.map(d => d.received),
-        //       datasets: [{
-        //           data: this.device.data.map(d => d.temp),
-        //           label: 'Temperature',
-        //           borderColor: '#2c5dc7',
-        //           backgroundColor: 'rgba(147, 170, 219, 0.1)'
-        //       }]
-        //     }
-        //   });
-        // }
       });
     });
   }
@@ -144,9 +121,13 @@ export class DeviceComponent {
     this.device.settings?.forEach(s => {
       this.settingsConfiguration.push(this.formBuilder.group({
         name: [s.name],
+        type: [s.type],
         path: [s.path],
+        value: [s.value],
       }));
     });
+
+    console.log(this.settingsConfiguration);
   }
 
   addTelemetry() {
@@ -165,7 +146,9 @@ export class DeviceComponent {
   addSetting() {
     this.settingsConfiguration.push(this.formBuilder.group({
       name: ['new name'],
+      type: ['switch'],
       path: ['new path'],
+      value: ['new value'],
     }));
     this.settingsConfiguration.markAsDirty();
   }
@@ -222,7 +205,5 @@ export class DeviceComponent {
         }
       }
     });
-
-    console.log(this.extractedTelemetry);
   }
 }

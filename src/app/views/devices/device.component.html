@@ -99,13 +99,19 @@
                     <form [formGroup]="deviceForm" (ngSubmit)="0;">
         
                         <div *ngIf="settingsConfiguration.controls?.length > 0" class="row">
-                            <div class="col-sm-4">
+                            <div class="col-md-3">
                                 <label>Name</label>
                             </div>
-                            <div class="col-sm-4">
-                                <label>Attribute</label>
+                            <div class="col-md-2">
+                                <label>Type</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-md-2">
+                                <label>Device Ref</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Value</label>
+                            </div>
+                            <div class="col-md-2">
                                 <label>&nbsp;</label>
                             </div>
                         </div>
@@ -113,17 +119,32 @@
                         <div formArrayName="settingsConfiguration">
                             <div *ngFor="let setting of settingsConfiguration.controls; let i = index">
                                 <div class="row" [formGroup]="setting">
-                                    <div class="form-group col-sm-4">
+                                    <div class="form-group col-md-3">
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="name" placeholder="123" formControlName="name">
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="form-group col-md-2">
+                                        <select formControlName="type" id="setting-type" name="setting-type" class="form-control" >
+                                            <option value="switch">Switch</option>
+                                            <option value="number">Numeric</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="path" placeholder="123" formControlName="path">
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input *ngIf="setting.controls.type.value == 'number'" type="text" class="form-control" id="path" placeholder="123" formControlName="value">
+                                            <label *ngIf="setting.controls.type.value == 'switch'" class="switch switch-label switch-pill switch-primary">
+                                                <input type="checkbox" class="switch-input" checked formControlName="value">
+                                                <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
                                         <button type="button" class="btn btn-outline-danger" (click)="removeSetting(i)">Remove</button>
                                     </div>
                                 </div>
