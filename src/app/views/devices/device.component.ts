@@ -1,11 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+
+import * as Chart from 'chart.js';
+import * as ramda from 'ramda';
 
 import { DevicesService } from '../../services/devices.service';
 import { GroupsService  } from '../../services/groups.service';
-import * as Chart from 'chart.js';
-import * as ramda from 'ramda';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     templateUrl: 'device.component.html',
@@ -25,6 +26,9 @@ export class DeviceComponent {
   @ViewChild('chartRef')
   private chartRef: ElementRef;
   private chart: Chart;
+
+  public lineChartType = 'line';
+
   public lineChartOptions: any = {
     scales: {
       xAxes: [
@@ -57,6 +61,17 @@ export class DeviceComponent {
     },
   };
 
+  public lineChartColours: Array<any> = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: "#002afc",
+      pointBackgroundColor: '#ff0d00',
+      pointBorderColor: '#32a85c',
+      pointHoverBackgroundColor: '#32a85c',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+  ]
+
   private device:any = {};
   private group:any = {};
   deviceForm : FormGroup;
@@ -82,19 +97,8 @@ export class DeviceComponent {
 
       this.devicesService.findOne(ID).subscribe(resp => {
         this.device = resp;
-        this.device.telemetry?.forEach(t => {
-          this.telemetryConfiguration.push(this.formBuilder.group({
-            name: [t.name],
-            path: [t.path],
-          }));
-        });
-
-        this.device.settings?.forEach(s => {
-          this.settingsConfiguration.push(this.formBuilder.group({
-            name: [s.name],
-            path: [s.path],
-          }));
-        });
+        this.refreshTelemetryConfigurationPanel();
+        this.refreshSettingsConfigurationPanel();
 
         this.route.data.subscribe(data => {
           data.title = resp['name'];
@@ -103,25 +107,45 @@ export class DeviceComponent {
         const GROUP_ID = ramda.path(['group_id'], this.device);
         this.groupsService.findOne(GROUP_ID).subscribe(group => {
           this.group = group;
-        })
+        });
 
-        if (this.device.data) {
-          this.chart = new Chart(this.chartRef.nativeElement, {
-            type: 'line',
-            options: this.lineChartOptions,
+        this.extractDeviceTelemetry();
+
+        // if (this.device.data) {
+        //   this.chart = new Chart(this.chartRef.nativeElement, {
+        //     type: 'line',
+        //     options: this.lineChartOptions,
             
-            data: {
-              labels: this.device.data?.map(d => d.received),
-              datasets: [{
-                  data: this.device.data.map(d => d.temp),
-                  label: 'Temperature',
-                  borderColor: '#2c5dc7',
-                  backgroundColor: 'rgba(147, 170, 219, 0.1)'
-              }]
-            }
-          });
-        }
+        //     data: {
+        //       labels: this.device.data?.map(d => d.received),
+        //       datasets: [{
+        //           data: this.device.data.map(d => d.temp),
+        //           label: 'Temperature',
+        //           borderColor: '#2c5dc7',
+        //           backgroundColor: 'rgba(147, 170, 219, 0.1)'
+        //       }]
+        //     }
+        //   });
+        // }
       });
+    });
+  }
+
+  refreshTelemetryConfigurationPanel(){
+    this.device.telemetry?.forEach(t => {
+      this.telemetryConfiguration.push(this.formBuilder.group({
+        name: [t.name],
+        path: [t.path],
+      }));
+    });
+  }
+
+  refreshSettingsConfigurationPanel() {
+    this.device.settings?.forEach(s => {
+      this.settingsConfiguration.push(this.formBuilder.group({
+        name: [s.name],
+        path: [s.path],
+      }));
     });
   }
 
@@ -158,6 +182,7 @@ export class DeviceComponent {
     }).subscribe(resp => {
       console.log(resp);
       this.device = resp;
+      this.extractDeviceTelemetry();
       this.telemetryConfiguration.markAsPristine();
     });
   }
@@ -169,11 +194,35 @@ export class DeviceComponent {
     }).subscribe(resp => {
       console.log(resp);
       this.device = resp;
+      this.extractDeviceTelemetry();
       this.settingsConfiguration.markAsPristine();
     });
   }
 
   viewGroup($id) {
     this.router.navigate(['groups', 'view', $id]);
+  }
+
+  extractedTelemetry:any = {};
+
+  extractDeviceTelemetry() {
+    this.device.telemetry?.forEach(_t => {
+      this.extractedTelemetry[_t.path] = {
+        labels: [],
+        data: []
+      };
+    });
+
+    this.device.data?.forEach(_d => {
+      
+      for (let key in _d) {
+        if (this.extractedTelemetry[key] != undefined) {
+          this.extractedTelemetry[key].labels.push(_d['received']);
+          this.extractedTelemetry[key].data.push(_d[key]);
+        }
+      }
+    });
+
+    console.log(this.extractedTelemetry);
   }
 }

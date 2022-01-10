@@ -137,29 +137,32 @@
         </div>
 </div>
 
-
-<div class="card">
-    <div class="card-header">
-        <h2>{{ device.name }}</h2>
-    </div>
-
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm col-md">
-                <div class="chart-wrapper">
-                    <canvas #chartRef style="height:250px;margin-top:40px;"></canvas>
-                </div>
-            </div>
+<div class="card-columns cols-2">
+    <div class="card" *ngFor="let telemetry of device.telemetry; let i = index">
+      <div class="card-header">
+        {{ telemetry.name }}
+        <div class="card-header-actions">
+          <a href="http://www.chartjs.org">
+            <small class="text-muted">docs</small>
+          </a>
         </div>
-        <div class="row">
-            <div class="col-sm col-md">
-                Device ID: {{ device.id }}. Type: {{ device.type }}. Registered .
-            </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas baseChart class="chart"
+            [datasets]="[{data: extractedTelemetry[telemetry.path].data}]"
+            [labels]="extractedTelemetry[telemetry.path].labels"
+            [options]="lineChartOptions"
+            [colors]="lineChartColours"
+            [legend]="false"
+            [chartType]="lineChartType"
+            style="height:250px;margin-top:40px;"></canvas>
         </div>
+      </div>
     </div>
 </div>
 
-<div class="card">
+<!--<div class="card">
     <div class="card-header">
         <h2>Log</h2>
     </div>
@@ -169,6 +172,6 @@
             Here will be a log of all exchanged messages.
         </div>
     </div>
-</div>
+</div>-->
 
 
