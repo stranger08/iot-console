@@ -55,6 +55,10 @@ export class GroupsComponent {
         this.retrieveDeviceGroups();
     }
 
+    ngOnChanges() {
+        this.retrieveDeviceGroups();
+    }
+
     retrieveDeviceGroups() {
         this.groupsService.findMany().subscribe(groups => {
             this.groups = groups;

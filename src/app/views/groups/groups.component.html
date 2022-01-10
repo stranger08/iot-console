@@ -4,8 +4,8 @@
         <div class="card">
           <div class="card-header group-name-heading">
             {{ group.name }}
+            <button type="button" class="btn btn-outline-primary" (click)="viewGroup(group.id)">View</button>
             <div class="card-header-actions" style="height: 21px;">
-              <button type="button" class="btn btn-outline-primary" (click)="viewGroup(group.id)">View</button>
               <button type="button" class="btn btn-outline-danger" (click)="removeGroupConfirm(group.id)">Remove</button>
             </div>
           </div>
@@ -14,12 +14,14 @@
               <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Telemetry Receivers</th>
                     <th>Registered</th>
                   </tr>
                 </thead>
                 <tbody >
                   <tr *ngFor="let device of group.devices" (click)="viewDevice(device.id)">
                       <td>{{ device.name }}</td>
+                      <td>{{ device.telemetry?.length || 0}}</td>
                       <td>{{ device.registeredAt }}</td>
                   </tr>
                 </tbody>
