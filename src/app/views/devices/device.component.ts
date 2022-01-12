@@ -58,8 +58,8 @@ export class DeviceComponent {
   public lineChartColours: Array<any> = [
     { // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: "#002afc",
-      pointBackgroundColor: '#ff0d00',
+      borderColor: "#ffc107",
+      pointBackgroundColor: '#20a8d8',
       pointBorderColor: '#32a85c',
       pointHoverBackgroundColor: '#32a85c',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'

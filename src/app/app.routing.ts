@@ -77,6 +77,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/groups/groups.module').then(m => m.GroupsModule)
       },
       {
+        path: 'projects',
+        loadChildren: () => import('./views/projects/projects.module').then(m => m.ProjectsModule)
+      },
+      {
         path: 'icons',
         loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)
       },

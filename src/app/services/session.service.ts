@@ -24,4 +24,12 @@ export class SessionService {
   logout() {
     window.sessionStorage.removeItem('token');
   }
+
+  getSelectedProject() {
+    return window.sessionStorage.getItem('project');
+  }
+
+  setSelectedProject(projectId) {
+    window.sessionStorage.setItem('project', projectId)
+  }
 }

@@ -39,6 +39,12 @@ export const navItems: INavData[] = [
     attributes: { user: true },
   },
   {
+    name: 'Projects',
+    url: '/projects',
+    icon: 'cil-user',
+    attributes: { user: true },
+  },
+  {
     title: true,
     name: 'Theme'
   },

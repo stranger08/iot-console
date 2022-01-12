@@ -18,6 +18,24 @@ const findByEmail = async (email) => {
     }
 }
 
+
+const findById = async (id) => {
+    const RESULT = await sql`
+        select *
+        from users
+        where id = ${ id }`;
+
+    const COUNT = ramda.path(['count'], RESULT);
+
+    if (COUNT == 1) {
+        const USER = ramda.path(['0'], RESULT);
+        return USER;
+    } else if (COUNT == 0) {
+        console.log(`UserService user with id ${id} not found.`);
+        return undefined;
+    }
+}
+
 const findAll = async () => {
     return await sql`
         select *
@@ -45,5 +63,6 @@ const create = async (user) => {
 module.exports = {
     create,
     findAll,
+    findById,
     findByEmail
 }
