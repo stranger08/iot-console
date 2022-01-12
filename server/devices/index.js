@@ -18,7 +18,7 @@ devicesRoutes.get('/:id', async (req, res) => {
 devicesRoutes.get('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
     const PROJECT_ID = ramda.path(['query', 'project'], req);
-    const DEVICES = await devicesService.findAllByUserNProject(USER_ID, PROJECT_ID);
+    const DEVICES = await devicesService.findAllByProject(PROJECT_ID);
     const RET_VAL = [];
 
     for (let device of DEVICES) {

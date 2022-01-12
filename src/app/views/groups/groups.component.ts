@@ -66,12 +66,11 @@ export class GroupsComponent {
     retrieveDeviceGroups() {
         this.groupsService.findMany().subscribe(groups => {
             this.groups = groups;
-        });
-
-        this.devicesService.findMany().subscribe(devices => {
-            this.devices = devices;
-            this.groups.forEach(group => {
-                group.devices = this.devices.filter(d => d.group_id == group.id)
+            this.devicesService.findMany().subscribe(devices => {
+                this.devices = devices;
+                this.groups.forEach(group => {
+                    group.devices = this.devices.filter(d => d.group_id == group.id)
+                });
             });
         });
     }

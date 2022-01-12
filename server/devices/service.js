@@ -24,11 +24,11 @@ const findAll = async () => {
         from devices`;
 }
 
-const findAllByUserNProject = async (userId, projectId) => {
+const findAllByProject = async (projectId) => {
     return await sql`
         select *
         from devices
-        where user_id = ${ userId } and project_id = ${projectId}`;
+        where project_id = ${projectId}`;
 }
 
 const create = async (userId, projectId, device) => {
@@ -87,6 +87,6 @@ module.exports = {
     findAll,
     findById,
     deleteById,
-    findAllByUserNProject,
+    findAllByProject,
     update,
 }
