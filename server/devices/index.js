@@ -17,7 +17,8 @@ devicesRoutes.get('/:id', async (req, res) => {
 
 devicesRoutes.get('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
-    const DEVICES = await devicesService.findAllByUserId(USER_ID);
+    const PROJECT_ID = ramda.path(['query', 'project'], req);
+    const DEVICES = await devicesService.findAllByUserNProject(USER_ID, PROJECT_ID);
     const RET_VAL = [];
 
     for (let device of DEVICES) {
@@ -46,7 +47,8 @@ devicesRoutes.post('/', async (req, res) => {
         }
     } else {
         const USER_ID = ramda.path(['user', 'id'], req);
-        const DEVICE = await devicesService.create(USER_ID, DEVICE_PAYLOAD);
+        const PROJECT_ID = ramda.path(['query', 'project'], req);
+        const DEVICE = await devicesService.create(USER_ID, PROJECT_ID, DEVICE_PAYLOAD);
         res.status(201).json(DEVICE);
     }
 });

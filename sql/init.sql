@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS "devices" (
     "id" SERIAL,
     "user_id" INT,
     "group_id" INT,
+    "project_id" INT,
     "name" VARCHAR(255) NOT NULL,
     "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
     "type" VARCHAR(20),
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS "devices" (
 CREATE TABLE IF NOT EXISTS "groups" (
     "id" SERIAL,
     "user_id" INT,
+    "project_id" INT,
     "name" VARCHAR(255) NOT NULL,
     "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
     PRIMARY KEY ("id"),

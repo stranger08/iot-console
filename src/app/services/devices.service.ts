@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from './BaseService';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,15 @@ import { BaseService } from './BaseService';
 export class DevicesService extends BaseService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sessionService: SessionService
   ) {
     super();
   }
 
   findMany() {
-    const REQUEST_URL = `${this._hostUrl}/devices`;
+    const PROJECT_ID = this.sessionService.getSelectedProject();
+    const REQUEST_URL = `${this._hostUrl}/devices?project=${PROJECT_ID}`;
     return this.http.get(REQUEST_URL, this.auth());
   }
 
@@ -24,7 +27,8 @@ export class DevicesService extends BaseService {
   }
 
   saveOne(device) {
-    const REQUEST_URL = `${this._hostUrl}/devices`;
+    const PROJECT_ID = this.sessionService.getSelectedProject();
+    const REQUEST_URL = `${this._hostUrl}/devices?project=${PROJECT_ID}`;
     return this.http.post(REQUEST_URL, device, this.auth());
   }
 

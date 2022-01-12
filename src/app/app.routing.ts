@@ -14,7 +14,7 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'groups',
     pathMatch: 'full',
   },
   {

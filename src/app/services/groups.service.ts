@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseService } from './BaseService';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,15 @@ import { BaseService } from './BaseService';
 export class GroupsService extends BaseService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sessionService: SessionService
   ) {
     super();
   }
 
   findMany() {
-    const REQUEST_URL = `${this._hostUrl}/groups`;
+    const PROJECT_ID = this.sessionService.getSelectedProject();
+    const REQUEST_URL = `${this._hostUrl}/groups?project=${PROJECT_ID}`;
     return this.http.get(REQUEST_URL, this.auth());
   }
 
@@ -29,7 +32,8 @@ export class GroupsService extends BaseService {
   }
 
   saveOne(group) {
-    const REQUEST_URL = `${this._hostUrl}/groups`;
+    const PROJECT_ID = this.sessionService.getSelectedProject();
+    const REQUEST_URL = `${this._hostUrl}/groups?project=${PROJECT_ID}`;
     return this.http.post(REQUEST_URL, group, this.auth());
   }
 }

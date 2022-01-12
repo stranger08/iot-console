@@ -5,14 +5,16 @@ const groupsService = require('./service');
 
 groupsRoutes.get('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
-    const GROUPS = await groupsService.findAllByUserId(USER_ID);
+    const PROJECT_ID = ramda.path(['query', 'project'], req);
+    const GROUPS = await groupsService.findAllByUserNProject(USER_ID, PROJECT_ID);
     res.status(200).json(GROUPS);
 });
 
 groupsRoutes.post('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
+    const PROJECT_ID = ramda.path(['query', 'project'], req);
     const GROUP_PAYLOAD = ramda.path(['body'], req);
-    const GROUP = groupsService.create(USER_ID, GROUP_PAYLOAD);
+    const GROUP = groupsService.create(USER_ID, PROJECT_ID, GROUP_PAYLOAD);
     res.status(201).json(GROUP);
 });
 

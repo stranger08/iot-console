@@ -39,21 +39,21 @@ const findAll = async () => {
         from groups`;
 }
 
-const findAllByUserId = async (userId) => {
+const findAllByUserNProject = async (userId, projectId) => {
     return await sql`
         select *
         from groups
-        where user_id = ${ userId }`;
+        where user_id = ${ userId } and project_id = ${projectId}`;
 }
 
-const create = async (userId, group) => {
+const create = async (userId, projectId, group) => {
     const NAME = ramda.path(['name'], group);
 
     const [new_group] = await sql`
         insert into groups (
-            user_id, name, "registeredAt"
+            user_id, project_id, name, "registeredAt"
         ) values (
-            ${ userId }, ${NAME}, now()
+            ${ userId }, ${projectId}, ${NAME}, now()
         )
         returning *`
     
@@ -65,5 +65,5 @@ module.exports = {
     findAll,
     findById,
     deleteById,
-    findAllByUserId,
+    findAllByUserNProject,
 }

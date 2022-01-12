@@ -55,5 +55,6 @@ export class DefaultLayoutComponent implements OnInit {
     console.log("selecting project", projectId);
     this.selectedProject = this.projects.find(p => p.id == projectId);
     this.sessionSerivce.setSelectedProject(projectId);
+    this.router.navigate(['']);
   }
 }

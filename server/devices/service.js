@@ -24,14 +24,14 @@ const findAll = async () => {
         from devices`;
 }
 
-const findAllByUserId = async (userId) => {
+const findAllByUserNProject = async (userId, projectId) => {
     return await sql`
         select *
         from devices
-        where user_id = ${ userId }`;
+        where user_id = ${ userId } and project_id = ${projectId}`;
 }
 
-const create = async (userId, device) => {
+const create = async (userId, projectId, device) => {
     const NAME = ramda.path(['name'], device);
     const TYPE = ramda.path(['type'], device);
     const GROUP = ramda.path(['group'], device);
@@ -39,9 +39,9 @@ const create = async (userId, device) => {
 
     const [new_device] = await sql`
         insert into devices (
-            user_id, group_id, name, "registeredAt", type, status
+            user_id, group_id, project_id, name, "registeredAt", type, status
         ) values (
-            ${userId}, ${GROUP}, ${NAME}, now(), ${TYPE}, ${STATUS}
+            ${userId}, ${GROUP}, ${projectId}, ${NAME}, now(), ${TYPE}, ${STATUS}
         )
         returning *`
     
@@ -87,6 +87,6 @@ module.exports = {
     findAll,
     findById,
     deleteById,
-    findAllByUserId,
+    findAllByUserNProject,
     update,
 }
