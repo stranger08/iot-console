@@ -28,9 +28,10 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.navItems = navItems;
+    this.navItems = navItems.filter(n => n.attributes?.user);
+    //this.navItems = navItems;
     this.loadUserProjects();
-    //this.navItems = navItems.filter(n => n.attributes?.user);
+    
   }
 
   projects:any = [];

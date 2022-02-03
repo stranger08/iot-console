@@ -8,18 +8,21 @@ function getRandomInt(min, max) {
 
 (async () => {
     const EXCHANGE_ENDPOINT = 'http://localhost:3000/control/exchange';
-    const DEVICE_ID = "17";
+    const DEVICE_ID = "7";
+
 
     for (let i = 0; i < 20; i++) {
         await got.post(EXCHANGE_ENDPOINT,{
                 json: {
                     deviceId: DEVICE_ID,
                     data: {
-                        temp: getRandomInt(15, 30),
-                        humidity: getRandomInt(0, 100),
-                        dust: getRandomInt(0, 50),
-                        power: getRandomInt(0, 1000),
-                        ventilator: getRandomInt(75, 80)
+                        "water-temp": getRandomInt(80, 100),
+                        "milk-supplies": getRandomInt(0, 3000),
+                        "cream-supplies": getRandomInt(40, 100),
+                        "power": getRandomInt(100, 1000),
+                        "change": getRandomInt(140, 2401),
+                        "orders": getRandomInt(0, 4),
+                        "sugar-supplies": getRandomInt(35, 249),
                     }
                 }
             });
