@@ -14,15 +14,12 @@ const constructConnection = async () => {
 }
 
 const getSqlClient = async () => {
-    // if (client) {
-    //     return client;
-    // } else {
-    //     client = await constructConnection();
-    //     return client;
-    // }
-
-    client = await constructConnection();
+    if (client) {
         return client;
+    } else {
+        client = await constructConnection();
+        return client;
+    }
 }
 
 module.exports = {
