@@ -196,14 +196,20 @@ export class DeviceComponent {
       };
     });
 
-    this.device.data?.forEach(_d => {
-      
-      for (let key in _d) {
-        if (this.extractedTelemetry[key] != undefined) {
-          this.extractedTelemetry[key].labels.push(_d['received']);
-          this.extractedTelemetry[key].data.push(_d[key]);
+    this.devicesService.findData(this.device.id).subscribe(resp => {
+      let data = ramda.pathOr([], ['items'], resp);
+      // FIXME, data should return preparsed from API!
+      data.forEach(_d => {
+        const item = ramda.path(['data'], _d);
+        for (let key in item) {
+          console.log(item)
+          if (this.extractedTelemetry[key] != undefined) {
+            this.extractedTelemetry[key].labels.push(_d['timestamp']);
+            this.extractedTelemetry[key].data.push(item[key]);
+          }
         }
-      }
+      });
+      console.log(this.extractedTelemetry);
     });
   }
 }

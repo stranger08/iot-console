@@ -1,4 +1,6 @@
 const { getSqlClient } = require('../dbclient/sql-provider');
+const { getMongoClient } = require('../dbclient/mongo-provider');
+
 const validator = require('validator');
 const ramda = require('ramda');
 
@@ -92,6 +94,21 @@ const deleteById = async (id) => {
     }
 }
 
+const findDataById = async (id) => {
+    const CLIENT = await getMongoClient();
+    const DB = CLIENT.db();
+    const COLLECTION = DB.collection('data');
+    const DEVICE_DATA = await COLLECTION.find(
+        {
+           'device.id': Number(id),
+        },
+        {
+            'data': 1,
+            'timestamp': 1
+        }).toArray();
+    return DEVICE_DATA;
+}
+
 module.exports = {
     create,
     findAll,
@@ -99,4 +116,5 @@ module.exports = {
     deleteById,
     findAllByProject,
     update,
+    findDataById,
 }

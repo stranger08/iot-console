@@ -15,6 +15,19 @@ devicesRoutes.get('/:id', async (req, res) => {
     }
 });
 
+devicesRoutes.get('/data/:id', async (req, res) => {
+    const ID = ramda.path(['params', 'id'], req);
+    const DEVICE_DATA = await devicesService.findDataById(ID);
+    if (DEVICE_DATA) {
+        res.status(200).json({
+            id: ID,
+            items: DEVICE_DATA,
+        });
+    } else {
+        res.status(404).json({});
+    }
+});
+
 devicesRoutes.get('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
     const PROJECT_ID = ramda.path(['query', 'project'], req);

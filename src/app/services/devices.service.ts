@@ -26,6 +26,11 @@ export class DevicesService extends BaseService {
     return this.http.get(REQUEST_URL, this.auth());
   }
 
+  findData(id) {
+    const REQUEST_URL = `${this._hostUrl}/devices/data/${id}`;
+    return this.http.get(REQUEST_URL, this.auth());
+  }
+
   saveOne(device) {
     const PROJECT_ID = this.sessionService.getSelectedProject();
     const REQUEST_URL = `${this._hostUrl}/devices?project=${PROJECT_ID}`;

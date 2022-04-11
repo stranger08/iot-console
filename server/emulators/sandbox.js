@@ -33,5 +33,7 @@ const device = {
 
 const lodash = require('lodash');
 
-
+const DEVICE_DATA_SETTINGS = device.telemetry || [];
+const DEVICE_DATA_PATHS = DEVICE_DATA_SETTINGS.map(t => t.path);
+const CAPTURED_DATA = lodash.pick(data, DEVICE_DATA_PATHS);
 console.log(CAPTURED_DATA);

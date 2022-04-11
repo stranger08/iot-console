@@ -6,7 +6,7 @@ let client = null;
 
 const constructConnection = async () => {
     try {
-        const conn = postgres(URI, {});
+        const conn = await postgres(URI, {});
         return conn;
     } catch (err) {
         console.dir(err);
@@ -14,12 +14,15 @@ const constructConnection = async () => {
 }
 
 const getSqlClient = async () => {
-    if (client) {
+    // if (client) {
+    //     return client;
+    // } else {
+    //     client = await constructConnection();
+    //     return client;
+    // }
+
+    client = await constructConnection();
         return client;
-    } else {
-        client = await constructConnection();
-        return client;
-    }
 }
 
 module.exports = {

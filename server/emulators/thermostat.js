@@ -8,7 +8,7 @@ function getRandomInt(min, max) {
 
 (async () => {
     const EXCHANGE_ENDPOINT = 'http://localhost:3000/control/exchange';
-    const DEVICE_ID = "2";
+    const DEVICE_ID = "34";
 
     for (let i = 0; i < 20; i++) {
         await got.post(EXCHANGE_ENDPOINT,{
