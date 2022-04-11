@@ -1,8 +1,10 @@
-const sql = require('../dbclient');
+const { getSqlClient } = require('../dbclient/sql-provider');
+const validator = require('validator');
 const ramda = require('ramda');
 
 const findById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         select *
         from devices
         where id = ${ id }`;
@@ -19,13 +21,18 @@ const findById = async (id) => {
 }
 
 const findAll = async () => {
-    return await sql`
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from devices`;
 }
 
 const findAllByProject = async (projectId) => {
-    return await sql`
+    if (!validator.isNumeric(projectId)) {
+        return [];
+    }
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from devices
         where project_id = ${projectId}`;
@@ -37,7 +44,8 @@ const create = async (userId, projectId, device) => {
     const GROUP = ramda.path(['group'], device);
     const STATUS = ramda.pathOr('Active', ['status'], device);
 
-    const [new_device] = await sql`
+    const SQL = await getSqlClient();
+    const [new_device] = await SQL`
         insert into devices (
             user_id, group_id, project_id, name, "registeredAt", type, status
         ) values (
@@ -55,7 +63,8 @@ const update = async (device) => {
         throw new Error(`DeviceServices m(update) - ID not specified.`)
     }
 
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         update devices set
             name = ${ device.name },
             data = ${ sql.json(device.data)},
@@ -68,7 +77,8 @@ const update = async (device) => {
 }
 
 const deleteById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         delete from devices
         where id = ${ id }`;
 

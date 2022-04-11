@@ -1,8 +1,10 @@
-const sql = require('../dbclient');
+const { getSqlClient } = require('../dbclient/sql-provider');
+const validator = require('validator');
 const ramda = require('ramda');
 
 const findById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         select *
         from groups
         where id = ${ id }`;
@@ -19,7 +21,8 @@ const findById = async (id) => {
 }
 
 const deleteById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         delete from groups
         where id = ${ id }`;
 
@@ -34,13 +37,18 @@ const deleteById = async (id) => {
 }
 
 const findAll = async () => {
-    return await sql`
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from groups`;
 }
 
 const findAllByProject = async (projectId) => {
-    return await sql`
+    if (!validator.isNumeric(projectId)) {
+        return [];
+    }
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from groups
         where project_id = ${projectId}`;
@@ -49,7 +57,8 @@ const findAllByProject = async (projectId) => {
 const create = async (userId, projectId, group) => {
     const NAME = ramda.path(['name'], group);
 
-    const [new_group] = await sql`
+    const SQL = await getSqlClient();
+    const [new_group] = await SQL`
         insert into groups (
             user_id, project_id, name, "registeredAt"
         ) values (

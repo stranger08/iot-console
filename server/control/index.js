@@ -3,6 +3,7 @@ const express = require('express');
 const controlRoutes = express.Router();
 
 const { devicesService } = require('../devices');
+const { recordDeviceData } = require('./service');
 
 controlRoutes.post('/exchange', async (req, res) => {
 
@@ -31,12 +32,15 @@ controlRoutes.post('/exchange', async (req, res) => {
         DEVICE.data = [];
     }
 
+    let received = new Date();
+
     DEVICE.data.push({
-        received: new Date(),
+        received,
         ...DATA,
     });
 
     DEVICE = await devicesService.update(DEVICE);
+    recordDeviceData(DEVICE, DATA, received);
 
     console.log(`Data exchange transaction completed for the device ${DEVICE_ID}`);
 

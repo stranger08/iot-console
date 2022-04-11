@@ -5,7 +5,7 @@ const groupsService = require('./service');
 
 groupsRoutes.get('/', async (req, res) => {
     const PROJECT_ID = ramda.path(['query', 'project'], req);
-    const GROUPS = await groupsService.findAllByProject(PROJECT_ID);
+    const GROUPS =  await groupsService.findAllByProject(PROJECT_ID);
     res.status(200).json(GROUPS);
 });
 

@@ -1,8 +1,9 @@
-const sql = require('../dbclient');
+const { getSqlClient } = require('../dbclient/sql-provider');
 const ramda = require('ramda');
 
 const findById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         select *
         from projects
         where id = ${ id }`;
@@ -19,7 +20,8 @@ const findById = async (id) => {
 }
 
 const deleteById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         delete from projects
         where id = ${ id }`;
 
@@ -34,13 +36,15 @@ const deleteById = async (id) => {
 }
 
 const findAll = async () => {
-    return await sql`
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from projects`;
 }
 
 const findAllByUserId = async (userId) => {
-    return await sql`
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from projects
         where created_by = ${ userId }`;
@@ -49,7 +53,8 @@ const findAllByUserId = async (userId) => {
 const create = async (userId, project) => {
     const NAME = ramda.path(['name'], project);
 
-    const [new_project] = await sql`
+    const SQL = await getSqlClient();
+    const [new_project] = await SQL`
         insert into projects (
             name, created_by, created_at
         ) values (
@@ -64,7 +69,8 @@ const addUserToProject = async (user, project) => {
     const USER_ID = ramda.path(['id'], user);
     const PROJECT_ID = ramda.path(['id'], project);
 
-    const [new_project_collaborator] = await sql`
+    const SQL = await getSqlClient();
+    const [new_project_collaborator] = await SQL`
         insert into project_users (
             project_id, user_id
         ) values (
@@ -76,7 +82,8 @@ const addUserToProject = async (user, project) => {
 }
 
 const findProjectUsers = async (projectId) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
                     select user_id
                     from project_users
                     where project_id = ${ projectId }`;
@@ -85,7 +92,8 @@ const findProjectUsers = async (projectId) => {
 }
 
 const findUserProjects = async (userId) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
                     select project_id
                     from project_users
                     where user_id = ${ userId }`;

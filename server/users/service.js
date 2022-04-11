@@ -1,8 +1,9 @@
-const sql = require('../dbclient');
+const { getSqlClient } = require('../dbclient/sql-provider');
 const ramda = require('ramda');
 
 const findByEmail = async (email) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         select *
         from users
         where email = ${ email }`;
@@ -20,7 +21,8 @@ const findByEmail = async (email) => {
 
 
 const findById = async (id) => {
-    const RESULT = await sql`
+    const SQL = await getSqlClient();
+    const RESULT = await SQL`
         select *
         from users
         where id = ${ id }`;
@@ -37,7 +39,8 @@ const findById = async (id) => {
 }
 
 const findAll = async () => {
-    return await sql`
+    const SQL = await getSqlClient();
+    return await SQL`
         select *
         from users`;
 }
@@ -48,7 +51,8 @@ const create = async (user) => {
     const ROLE = ramda.pathOr('user', ['role'], user);
     const STATUS = ramda.pathOr('active', ['status'], user);
 
-    const [new_user] = await sql`
+    const SQL = await getSqlClient();
+    const [new_user] = await SQL`
         insert into users (
             email, password, "registeredAt", role, status
         ) values (
