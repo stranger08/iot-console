@@ -103,8 +103,10 @@ const findDataById = async (id) => {
            'device.id': Number(id),
         },
         {
-            'data': 1,
-            'timestamp': 1
+            projection: {
+                'data': 1,
+                'timestamp': 1
+            }
         }).toArray();
     return DEVICE_DATA;
 }

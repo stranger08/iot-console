@@ -26,9 +26,11 @@ services:
       MONGO_INITDB_DATABASE: root-db
     volumes:
       - ./mongodb/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo-db-data:/data/db
 
 volumes:
   db-data:
+  mongo-db-data:
 
 networks:
   local:
