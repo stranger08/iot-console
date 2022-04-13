@@ -22,6 +22,7 @@ const { usersRoutes} = require('./users');
 const { groupsRoutes } = require('./groups');
 const { devicesRoutes } = require('./devices');
 const { controlRoutes } = require('./control');
+const { controlsRoutes } = require('./controls');
 const { projectsRoutes } = require('./projects');
 
 app.use('/users', passport.authenticate('auth', {session: false}), usersRoutes);
@@ -29,6 +30,7 @@ app.use('/groups', passport.authenticate('auth', {session: false}), groupsRoutes
 app.use('/devices', passport.authenticate('auth', {session: false}), devicesRoutes);
 app.use('/projects', passport.authenticate('auth', {session: false}), projectsRoutes);
 app.use('/control', controlRoutes);// TODO api key authentication strategy
+app.use('/controls', passport.authenticate('auth', {session: false}), controlsRoutes);
 
 // TODO:
 // authenticate can accept custom callback if we want to get exact reason as to why jwt verify failed, for example if we are up to 

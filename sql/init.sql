@@ -63,3 +63,15 @@ CREATE TABLE IF NOT EXISTS "groups" (
       FOREIGN KEY(user_id) 
 	  REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS "controls" (
+    "id" SERIAL,
+    "user_id" INT,
+    "project_id" INT,
+    "name" VARCHAR(255) NOT NULL,
+    "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+    PRIMARY KEY ("id"),
+    CONSTRAINT fk_user
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id)
+);

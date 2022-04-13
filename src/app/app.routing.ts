@@ -65,6 +65,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/chartjs/chartjs.module').then(m => m.ChartJSModule)
       },
       {
+        path: 'controls',
+        loadChildren: () => import('./views/control/controls.module').then(m => m.ControlsModule)
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
