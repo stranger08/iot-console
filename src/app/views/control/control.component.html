@@ -40,17 +40,14 @@
                                 <div class="form-group col-sm-3">
                                     <div class="form-group">
                                         <select formControlName="device" id="device" name="device" class="form-control" (change)="pullDevice(i)">
-                                            <option *ngFor="let d of devices" [value]="d.id">{{ d.name }}</option>
+                                            <option *ngFor="let d of devices; let device_index = index" [value]="device_index">{{ d.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <select formControlName="path" id="path" name="path" class="form-control" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <!-- TODO update list of displayed selections based on what device has been chosen -->
-                                            <option *ngFor="let t of devices?.find(condition.controls.device?.value).telemetry" [value]="t.name">{{ t.name }}</option>
+                                            <option *ngFor="let t of devices[condition.controls.device?.value]?.telemetry" [value]="t.name">{{ t.name }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -109,39 +106,26 @@
                                 <div class="form-group col-md-3">
                                     <div class="form-group">
                                         <select formControlName="device" id="device" name="device" class="form-control" >
-                                            <option *ngFor="let d of devices" [value]="d.id">{{ d.name }}</option>
+                                            <option *ngFor="let d of devices; let device_index = index" [value]="device_index">{{ d.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div class="form-group">
                                         <select formControlName="setting" id="setting" name="setting" class="form-control" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option *ngFor="let s of action.controls.device.settings" [value]="s.name">{{ s.name }]</option>
+                                            <option *ngFor="let s of devices[action.controls.device?.value]?.settings; let setting_index = index" [value]="setting_index">{{ s.name }}</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <select formControlName="value" id="value" name="value" class="form-control" >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!--
-                                    TODO - upon receiving device available settings and after user selecting which setting he wants to alternate, present 
-                                    user correct type of value input type
-                                    <div class="col-md-3">
-                                    <div class="form-group">
-                                        <input *ngIf="action.controls.type.value == 'number'" type="text" class="form-control" id="path" placeholder="123" formControlName="value">
-                                        <label *ngIf="action.controls.type.value == 'switch'" class="switch switch-label switch-pill switch-primary">
+                                        <input *ngIf="devices.at(action.controls.device?.value)?.settings?.at(action.controls.setting?.value)?.type == 'number'" type="text" class="form-control" id="path" placeholder="123" formControlName="value">
+                                        <label *ngIf="devices.at(action.controls.device?.value)?.settings?.at(action.controls.setting?.value)?.type == 'switch'" class="switch switch-label switch-pill switch-primary">
                                             <input type="checkbox" class="switch-input" checked formControlName="value">
                                             <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                                         </label>
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn btn-outline-danger" (click)="removeAction(i)">Remove</button>
                                 </div>

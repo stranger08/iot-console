@@ -104,6 +104,7 @@ export class ControlComponent {
   }
 
   saveConditionsConfiguration() {
+    // TODO be aware device form values represent indexes of a retrieved list of devices not their ids.
     // this.devicesService.saveOne({
     //   id: this.device.id,
     //   telemetry: this.telemetryConfiguration.value
