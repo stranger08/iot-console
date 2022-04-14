@@ -104,15 +104,16 @@ export class ControlComponent {
   }
 
   saveConditionsConfiguration() {
+    console.log(this.conditionsConfiguration.value);
     // TODO be aware device form values represent indexes of a retrieved list of devices not their ids.
-    // this.devicesService.saveOne({
+    // this.controlService.saveOne({
     //   id: this.device.id,
     //   telemetry: this.telemetryConfiguration.value
     // }).subscribe(resp => {
     //   console.log(resp);
     //   this.device = resp;
     //   this.extractDeviceTelemetry();
-    //   this.telemetryConfiguration.markAsPristine();
+    //   this.conditionsConfiguration.markAsPristine();
     // });
   }
 
@@ -126,11 +127,6 @@ export class ControlComponent {
     //   this.extractDeviceTelemetry();
     //   this.settingsConfiguration.markAsPristine();
     // });
-  }
-
-  pullDevice(i) {
-    console.log(this.conditionsConfiguration.get(`${i}.device`).value);
-    console.log(this.conditionsConfiguration.get(`${i}.path`));
   }
 
   retrieveDeviceList() {

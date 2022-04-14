@@ -39,15 +39,19 @@
                             <div class="row" [formGroup]="condition">
                                 <div class="form-group col-sm-3">
                                     <div class="form-group">
-                                        <select formControlName="device" id="device" name="device" class="form-control" (change)="pullDevice(i)">
-                                            <option *ngFor="let d of devices; let device_index = index" [value]="device_index">{{ d.name }}</option>
+                                        <select formControlName="device" id="device" name="device" class="form-control">
+                                            <option *ngFor="let d of devices;" [value]="d.id">{{ d.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <select formControlName="path" id="path" name="path" class="form-control" >
-                                            <option *ngFor="let t of devices[condition.controls.device?.value]?.telemetry" [value]="t.name">{{ t.name }}</option>
+                                            <ng-container *ngFor="let dev of devices">
+                                                <ng-container *ngIf="dev.id == condition.controls.device?.value">
+                                                    <option *ngFor="let t of dev?.telemetry" [value]="t.path">{{ t.name }}</option>
+                                                </ng-container>
+                                            </ng-container>
                                         </select>
                                     </div>
                                 </div>
@@ -106,24 +110,40 @@
                                 <div class="form-group col-md-3">
                                     <div class="form-group">
                                         <select formControlName="device" id="device" name="device" class="form-control" >
-                                            <option *ngFor="let d of devices; let device_index = index" [value]="device_index">{{ d.name }}</option>
+                                            <option *ngFor="let d of devices" [value]="d.id">{{ d.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div class="form-group">
                                         <select formControlName="setting" id="setting" name="setting" class="form-control" >
-                                            <option *ngFor="let s of devices[action.controls.device?.value]?.settings; let setting_index = index" [value]="setting_index">{{ s.name }}</option>
+                                            <ng-container *ngFor="let dev of devices">
+                                                <ng-container *ngIf="dev.id == action.controls.device?.value">
+                                                    <option *ngFor="let s of dev?.settings" [value]="s.path">{{ s.name }}</option>
+                                                </ng-container>
+                                            </ng-container>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <input *ngIf="devices.at(action.controls.device?.value)?.settings?.at(action.controls.setting?.value)?.type == 'number'" type="text" class="form-control" id="path" placeholder="123" formControlName="value">
-                                        <label *ngIf="devices.at(action.controls.device?.value)?.settings?.at(action.controls.setting?.value)?.type == 'switch'" class="switch switch-label switch-pill switch-primary">
-                                            <input type="checkbox" class="switch-input" checked formControlName="value">
-                                            <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-                                        </label>
+                                        <ng-container *ngFor="let dev of devices">
+                                            <ng-container *ngIf="dev.id == action.controls.device?.value">
+                                                <ng-container *ngFor="let set of dev.settings">
+                                                    <ng-container *ngIf="set.path == action.controls.setting?.value">
+                                                        <ng-container *ngIf="set.type == 'number'">
+                                                            <input type="text" class="form-control" id="path" placeholder="123" formControlName="value">
+                                                        </ng-container>
+                                                        <ng-container *ngIf="set.type == 'switch'">
+                                                            <label class="switch switch-label switch-pill switch-primary">
+                                                                <input type="checkbox" class="switch-input" checked formControlName="value">
+                                                                <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                                            </label>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
