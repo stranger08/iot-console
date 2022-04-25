@@ -4,7 +4,6 @@
     </div>
 </div>
 
-
 <div class="card-columns cols-2 row">
     <div class="col">
         <div class="card">
@@ -119,7 +118,7 @@
                                         <select formControlName="setting" id="setting" name="setting" class="form-control" >
                                             <ng-container *ngFor="let dev of devices">
                                                 <ng-container *ngIf="dev.id == action.controls.device?.value">
-                                                    <option *ngFor="let s of dev?.settings" [value]="s.path">{{ s.name }}</option>
+                                                    <option *ngFor="let s of dev?.settings" [value]="s.path" (change)="runChangeDetection()">{{ s.name }}</option>
                                                 </ng-container>
                                             </ng-container>
                                         </select>

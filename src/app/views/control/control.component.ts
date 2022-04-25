@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
+import { ChangeDetectorRef } from '@angular/core';
 import { ControlService } from '../../services/control.service';
 import { DevicesService } from '../../services/devices.service';
 
@@ -15,6 +15,7 @@ export class ControlComponent {
     private route: ActivatedRoute,
     private formBuilder : FormBuilder,
     private devicesService: DevicesService,
+    private ref: ChangeDetectorRef,
   ) {
 
   }
@@ -133,6 +134,10 @@ export class ControlComponent {
     this.devicesService.findMany().subscribe(devices => {
         this.devices = devices;
     });
+  }
+
+  runChangeDetection () {
+    this.ref.markForCheck();
   }
 
 }

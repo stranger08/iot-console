@@ -1,3 +1,5 @@
+
+// compose file cheatsheat:
 nerdctl compose up -d  --address /var/run/docker/containerd/containerd.sock
 nerdctl compose down  --address /var/run/docker/containerd/containerd.sock
 nerdctl compose ps  --address /var/run/docker/containerd/containerd.sock
