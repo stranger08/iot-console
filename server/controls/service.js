@@ -57,6 +57,12 @@ const deleteById = async (id) => {
     const COUNT = ramda.path(['count'], RESULT);
 
     if (COUNT == 1) {
+        await SQL`
+            delete from controls_conditions
+            where control_id = ${ ID }`;
+        await SQL`
+            delete from controls_actions
+            where control_id = ${ ID }`;
         return id;
     } else if (COUNT == 0) {
         console.log(`controlsService control with id ${id} not found.`);
@@ -141,7 +147,7 @@ const update = async (control) => {
             value: a.value,
         };
     });
-    console.log(ACTIONS);
+
     if (ACTIONS.length > 0) {
         await SQL`insert into controls_actions ${ SQL(ACTIONS, 'control_id', 'device_id', 'setting_path', 'value') }`;
     }

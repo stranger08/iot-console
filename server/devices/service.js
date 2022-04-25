@@ -4,6 +4,40 @@ const { getMongoClient } = require('../dbclient/mongo-provider');
 const validator = require('validator');
 const ramda = require('ramda');
 
+const _getTelemetry = async (id) => {
+    const SQL = await getSqlClient();
+    const TELEMETRY = await SQL`
+        select *
+        from device_telemetry
+        where device_id = ${id}`;
+
+    return TELEMETRY.map(t => {
+        return {
+            device: t.device_id,
+            name: t.name,
+            path: t.data_ref,
+        };
+    });
+}
+
+const _getSettings = async (id) => {
+    const SQL = await getSqlClient();
+    const SETTINGS = await SQL`
+        select *
+            from device_setting
+            where device_id = ${id}`;
+
+    return SETTINGS.map(s => {
+        return {
+            device: s.device_id,
+            name: s.name,
+            type: s.type,
+            path: s.path,
+            value: s.value,
+        };
+    });
+}
+
 const findById = async (id) => {
     const SQL = await getSqlClient();
     const RESULT = await SQL`
@@ -15,6 +49,9 @@ const findById = async (id) => {
 
     if (COUNT == 1) {
         const DEVICE = ramda.path(['0'], RESULT);
+        
+        DEVICE.telemetry = _getTelemetry(id);
+        DEVICE.settings = _getSettings(id);
         return DEVICE;
     } else if (COUNT == 0) {
         console.log(`DevicesService device with id ${id} not found.`);
@@ -34,10 +71,22 @@ const findAllByProject = async (projectId) => {
         return [];
     }
     const SQL = await getSqlClient();
-    return await SQL`
+    const DEVICE_LIST = await SQL`
         select *
         from devices
         where project_id = ${projectId}`;
+
+    let result = [];
+    for (let device of DEVICE_LIST) {
+        let telemetry = await _getTelemetry(device.id);
+        let settings = await _getSettings(device.id);
+        result.push({
+            ...device,
+            telemetry,
+            settings,
+        });
+    }
+    return result;
 }
 
 const create = async (userId, projectId, device) => {
@@ -68,12 +117,43 @@ const update = async (device) => {
     const SQL = await getSqlClient();
     const RESULT = await SQL`
         update devices set
-            name = ${ device.name },
-            data = ${ SQL.json(device.data)},
-            telemetry = ${ SQL.json(device.telemetry) },
-            settings = ${ SQL.json(device.settings) }
+            name = ${ device.name }
             where id = ${ ID }
         returning *`;
+
+    await SQL`
+        delete from device_telemetry
+        where device_id = ${ ID }`;
+    
+    const TELEMETRY = device.telemetry.map(t => {
+        return {
+            device_id: ID,
+            name: t.name,
+            data_ref: t.path,
+        };
+    });
+    
+    if (TELEMETRY.length > 0) {
+        await SQL`insert into device_telemetry ${ SQL(TELEMETRY, 'device_id', 'name', 'data_ref') }`;
+    }
+
+    await SQL`
+        delete from device_setting
+        where device_id = ${ ID }`;
+
+    const SETTINGS = device.settings.map(s => {
+        return {
+            device_id: ID,
+            name: s.name,
+            type: s.type,
+            path: s.path,
+            value: s.value,
+        }
+    });
+    
+    if (SETTINGS.length > 0) {
+        await SQL`insert into device_setting ${ SQL(SETTINGS, 'device_id', 'name', 'type', 'path', 'value') }`;
+    }
 
     return RESULT.length == 1 ? RESULT[0] : undefined;
 }
@@ -87,6 +167,12 @@ const deleteById = async (id) => {
     const COUNT = ramda.path(['count'], RESULT);
 
     if (COUNT == 1) {
+        await SQL`
+            delete from device_telemetry
+            where device_id = ${ ID }`;
+        await SQL`
+            delete from device_setting
+            where device_id = ${ ID }`;
         return id;
     } else if (COUNT == 0) {
         console.log(`GroupsService group with id ${id} not found.`);

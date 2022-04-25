@@ -43,13 +43,32 @@ CREATE TABLE IF NOT EXISTS "devices" (
     "registeredAt" TIMESTAMP WITH TIME ZONE NOT NULL,
     "type" VARCHAR(20),
     "status" VARCHAR(20),
-    "data" JSONB,
-    "telemetry" JSONB,
-    "settings" JSONB,
     PRIMARY KEY ("id"),
     CONSTRAINT fk_user
       FOREIGN KEY(user_id) 
 	  REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS "device_telemetry" (
+    "id" SERIAL,
+    "device_id" INT,
+    "name" VARCHAR(30),
+    "data_ref" VARCHAR(30),
+    CONSTRAINT fk_device
+        FOREIGN KEY(device_id)
+        REFERENCES devices(id)
+);
+
+CREATE TABLE IF NOT EXISTS "device_setting" (
+    "id" SERIAL,
+    "device_id" INT,
+    "name" VARCHAR(30),
+    "type" VARCHAR(30),
+    "path" VARCHAR(30),
+    "value" VARCHAR(30),
+    CONSTRAINT fk_device
+        FOREIGN KEY(device_id)
+        REFERENCES devices(id)
 );
 
 CREATE TABLE IF NOT EXISTS "groups" (
