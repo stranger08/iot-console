@@ -27,9 +27,22 @@ controlsRoutes.get('/details/:control_id', async (req, res) => {
 controlsRoutes.post('/', async (req, res) => {
     const USER_ID = ramda.path(['user', 'id'], req);
     const CONTROL_PAYLOAD = ramda.path(['body', 'control'], req);
-    const PROJECT_ID = ramda.path(['body', 'project', 'id'], req);
-    const CONTROL = await controlsService.create(USER_ID, PROJECT_ID, CONTROL_PAYLOAD);
-    res.status(201).json(CONTROL);
+    const ID = ramda.path(['id'], CONTROL_PAYLOAD);
+
+    if (ID) {
+        let control = await controlsService.findById(ID);
+        if (control) {
+            control = ramda.mergeLeft(CONTROL_PAYLOAD, control);
+            control = await controlsService.update(control);
+            res.status(201).json(control);
+        } else {
+            res.status(404).json(`No control definition with specified id: ${ID}`);
+        }
+    } else {
+        const PROJECT_ID = ramda.path(['body', 'project', 'id'], req);
+        const CONTROL = await controlsService.create(USER_ID, PROJECT_ID, CONTROL_PAYLOAD);
+        res.status(201).json(CONTROL);
+    }
 });
 
 controlsRoutes.delete('/:id', async (req, res) => {

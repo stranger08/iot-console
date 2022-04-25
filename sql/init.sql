@@ -75,3 +75,34 @@ CREATE TABLE IF NOT EXISTS "controls" (
       FOREIGN KEY(user_id) 
 	  REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS "controls_conditions" (
+    "id" SERIAL,
+    "control_id" INT,
+    "device_id" INT,
+    "data_path" VARCHAR(30),
+    "operator" VARCHAR(30),
+    "value" VARCHAR(30),
+    PRIMARY KEY ("id"),
+    CONSTRAINT fk_control
+        FOREIGN KEY(control_id)
+        REFERENCES controls(id),
+    CONSTRAINT fk_device
+        FOREIGN KEY(device_id)
+        REFERENCES devices(id)
+);
+
+CREATE TABLE IF NOT EXISTS "controls_actions" (
+    "id" SERIAL,
+    "control_id" INT,
+    "device_id" INT,
+    "setting_path" VARCHAR(30),
+    "value" VARCHAR(30),
+    PRIMARY KEY ("id"),
+    CONSTRAINT fk_control
+        FOREIGN KEY(control_id)
+        REFERENCES controls(id),
+    CONSTRAINT fk_device
+        FOREIGN KEY(device_id)
+        REFERENCES devices(id)
+)

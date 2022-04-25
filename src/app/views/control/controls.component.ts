@@ -27,7 +27,7 @@ export class ControlsComponent {
     }
 
     ngOnInit() {
-        this.controlService.findMany().subscribe(resp => {
+        this.controlService.findManyByProject().subscribe(resp => {
             this.controls = resp;
         });
     }

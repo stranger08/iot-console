@@ -38,8 +38,10 @@ export class ControlComponent {
       const ID = params['id'];
 
       this.controlService.findOne(ID).subscribe(resp => {
+        console.log(resp);
         this.control = resp;
-
+        this.refreshConditionsConfigurationPanel();
+        this.refreshSettingsConfigurationPanel();
         this.route.data.subscribe(data => {
           data.title = resp['name'];
         });
@@ -56,23 +58,15 @@ export class ControlComponent {
   }
 
   refreshConditionsConfigurationPanel(){
-    // this.device.telemetry?.forEach(t => {
-    //   this.telemetryConfiguration.push(this.formBuilder.group({
-    //     name: [t.name],
-    //     path: [t.path],
-    //   }));
-    // });
+    this.control.conditions?.forEach(c => {
+      this.conditionsConfiguration.push(this.formBuilder.group(c))
+    });
   }
 
   refreshSettingsConfigurationPanel() {
-    // this.device.settings?.forEach(s => {
-    //   this.settingsConfiguration.push(this.formBuilder.group({
-    //     name: [s.name],
-    //     type: [s.type],
-    //     path: [s.path],
-    //     value: [s.value],
-    //   }));
-    // });
+    this.control.actions?.forEach(a => {
+      this.actionsConfiguration.push(this.formBuilder.group(a));
+    });
   }
 
   addCondition() {
@@ -105,29 +99,24 @@ export class ControlComponent {
   }
 
   saveConditionsConfiguration() {
-    console.log(this.conditionsConfiguration.value);
-    // TODO be aware device form values represent indexes of a retrieved list of devices not their ids.
-    // this.controlService.saveOne({
-    //   id: this.device.id,
-    //   telemetry: this.telemetryConfiguration.value
-    // }).subscribe(resp => {
-    //   console.log(resp);
-    //   this.device = resp;
-    //   this.extractDeviceTelemetry();
-    //   this.conditionsConfiguration.markAsPristine();
-    // });
+    this.controlService.saveOne({
+      id: this.control.id,
+      conditions: this.conditionsConfiguration.value
+    }).subscribe(resp => {
+      this.control = resp;
+      this.conditionsConfiguration.markAsPristine();
+    });
   }
 
   saveActionsConfiguration() {
-    // this.devicesService.saveOne({
-    //   id: this.device.id,
-    //   settings: this.settingsConfiguration.value
-    // }).subscribe(resp => {
-    //   console.log(resp);
-    //   this.device = resp;
-    //   this.extractDeviceTelemetry();
-    //   this.settingsConfiguration.markAsPristine();
-    // });
+    console.log(this.actionsConfiguration.value);
+    this.controlService.saveOne({
+      id: this.control.id,
+      actions: this.actionsConfiguration.value
+    }).subscribe(resp => {
+      this.control = resp;
+      this.actionsConfiguration.markAsPristine();
+    });
   }
 
   retrieveDeviceList() {

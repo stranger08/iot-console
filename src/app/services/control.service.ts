@@ -10,13 +10,19 @@ export class ControlService extends BaseService {
 
   constructor(
     private http: HttpClient,
-    private sessionServicee: SessionService,
+    private sessionService: SessionService,
   ) {
     super();
   }
 
   findMany() {
     const REQUEST_URL = `${this._hostUrl}/controls?list=all`;
+    return this.http.get(REQUEST_URL, this.auth());
+  }
+
+  findManyByProject() {
+    const PROJECT_ID = this.sessionService.getSelectedProject();
+    const REQUEST_URL = `${this._hostUrl}/controls/list/${PROJECT_ID}`;
     return this.http.get(REQUEST_URL, this.auth());
   }
 
@@ -31,7 +37,7 @@ export class ControlService extends BaseService {
   }
 
   saveOne(control) {
-    const PROJECT_ID = this.sessionServicee.getSelectedProject();
+    const PROJECT_ID = this.sessionService.getSelectedProject();
     const REQUEST_URL = `${this._hostUrl}/controls`;
     const REQUEST_PAYLOAD = {
       project: {
