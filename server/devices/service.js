@@ -50,8 +50,8 @@ const findById = async (id) => {
     if (COUNT == 1) {
         const DEVICE = ramda.path(['0'], RESULT);
         
-        DEVICE.telemetry = _getTelemetry(id);
-        DEVICE.settings = _getSettings(id);
+        DEVICE.telemetry = await _getTelemetry(id);
+        DEVICE.settings = await _getSettings(id);
         return DEVICE;
     } else if (COUNT == 0) {
         console.log(`DevicesService device with id ${id} not found.`);

@@ -33,13 +33,6 @@ controlRoutes.post('/exchange', async (req, res) => {
     }
 
     let received = new Date();
-
-    DEVICE.data.push({
-        received,
-        ...DATA,
-    });
-
-    DEVICE = await devicesService.update(DEVICE);
     captureDeviceData(DEVICE, DATA, received);
 
     console.log(`Data exchange transaction completed for the device ${DEVICE_ID}`);
