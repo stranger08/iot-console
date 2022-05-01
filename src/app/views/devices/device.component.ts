@@ -123,12 +123,18 @@ export class DeviceComponent {
         name: [s.name],
         type: [s.type],
         path: [s.path],
-        value: [s.value],
+        value: [this.getValueField(s.value)],
       }));
     });
-
-    console.log(this.settingsConfiguration);
   }
+
+  isStringTrue = s => s == 'true';
+
+  getBooleanValue = s => this.isStringTrue(s) ? true : false;
+
+  isBoolean = val => val == 'true' || val == 'false';
+
+  getValueField = (val) => this.isBoolean(val) ? this.getBooleanValue(val) : val;
 
   addTelemetry() {
     this.telemetryConfiguration.push(this.formBuilder.group({
@@ -163,7 +169,6 @@ export class DeviceComponent {
       id: this.device.id,
       telemetry: this.telemetryConfiguration.value
     }).subscribe(resp => {
-      console.log(resp);
       this.device = resp;
       this.extractDeviceTelemetry();
       this.telemetryConfiguration.markAsPristine();
@@ -175,7 +180,6 @@ export class DeviceComponent {
       id: this.device.id,
       settings: this.settingsConfiguration.value
     }).subscribe(resp => {
-      console.log(resp);
       this.device = resp;
       this.extractDeviceTelemetry();
       this.settingsConfiguration.markAsPristine();

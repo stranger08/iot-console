@@ -197,6 +197,28 @@ const findDataById = async (id) => {
     return DEVICE_DATA;
 }
 
+const findLatestDataPacket = async (id) => {
+    const CLIENT = await getMongoClient();
+    const DB = CLIENT.db();
+    const COLLECTION = DB.collection('data');
+    const LATEST_DATA_PACKET = await COLLECTION.find(
+        {
+           'device.id': Number(id),
+        },
+        {
+            projection: {
+                'data': 1,
+                'timestamp': 1
+            },
+            sort: {
+                'timestamp': -1
+            },
+            limit: 1
+        }).toArray();
+
+    return LATEST_DATA_PACKET[0];
+}
+
 module.exports = {
     create,
     findAll,
@@ -205,4 +227,5 @@ module.exports = {
     findAllByProject,
     update,
     findDataById,
+    findLatestDataPacket,
 }

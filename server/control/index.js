@@ -3,7 +3,10 @@ const express = require('express');
 const controlRoutes = express.Router();
 
 const { devicesService } = require('../devices');
+const { controlsService } = require('../controls');
+const { applyControl } = require('../controls/apply');
 const { captureDeviceData } = require('./service');
+const e = require('express');
 
 controlRoutes.post('/exchange', async (req, res) => {
 
@@ -40,6 +43,45 @@ controlRoutes.post('/exchange', async (req, res) => {
     res.status(200).json({
         commands: [],
     });
+});
+
+controlRoutes.get('/settings/:device_id', async (req, res) => {
+    try {
+        const DEVICE_ID = ramda.path(['params', 'device_id'], req);
+
+        if (!DEVICE_ID) {
+            res.status(400).json({'status': 'Device ID required.'});
+            return;
+        }
+
+        let DEVICE = await devicesService.findById(DEVICE_ID);
+
+        if (!DEVICE) {
+            res.status(400).json({'status': 'Device ID is not registered at the system.'});
+            return;
+        }
+
+        const CONTROL_RULES_AFFECTING_DEVICE = await controlsService.findAllByAffectedDeviceId(DEVICE_ID);
+
+        for (let controlRule of CONTROL_RULES_AFFECTING_DEVICE) {
+            let controlId = ramda.path(['control_id'], controlRule);
+            let isControlRuleApplied = await applyControl(controlId);
+
+            if (isControlRuleApplied) {
+                console.log(`Control rule ${controlId} has been applied`);
+            } else {
+                console.log(`Control rule ${controlId} has not been applied`);
+            }
+            
+        }
+
+        res.status(200).json({
+            device: DEVICE
+        });
+    } catch (error) {
+        console.error(`Error (controlRouter.settings): ${error}`);
+        res.status(500).json({ error });
+    }
 });
 
 module.exports = {

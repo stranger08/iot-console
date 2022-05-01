@@ -88,6 +88,19 @@ const findAllByProjectId = async (projectId) => {
         where project_id = ${projectId}`;
 }
 
+const findAllByAffectedDeviceId = async (deviceId) => {
+    if (!validator.isNumeric(deviceId)) {
+        return [];
+    }
+
+    const SQL = await getSqlClient();
+    return await SQL`
+        select distinct(control_id)
+        from controls_actions
+        where device_id = ${deviceId}
+    `;
+}
+
 const create = async (userId, projectId, control) => {
     const NAME = ramda.path(['name'], control);
 
@@ -161,5 +174,6 @@ module.exports = {
     findAll,
     findById,
     findAllByProjectId,
+    findAllByAffectedDeviceId,
     deleteById,
 }

@@ -25,12 +25,12 @@ export class ControlComponent {
   devices:any = [];
 
   ngOnInit() {
-    this.loadControl();
     this.retrieveDeviceList();
     this.controlForm = this.formBuilder.group({
       conditionsConfiguration: this.formBuilder.array([]),
       actionsConfiguration: this.formBuilder.array([]),
     });
+    this.loadControl();
   }
 
   loadControl() {
@@ -41,7 +41,7 @@ export class ControlComponent {
         console.log(resp);
         this.control = resp;
         this.refreshConditionsConfigurationPanel();
-        this.refreshSettingsConfigurationPanel();
+        this.refreshActionsConfigurationPanel();
         this.route.data.subscribe(data => {
           data.title = resp['name'];
         });
@@ -63,11 +63,23 @@ export class ControlComponent {
     });
   }
 
-  refreshSettingsConfigurationPanel() {
+  refreshActionsConfigurationPanel() {    
     this.control.actions?.forEach(a => {
-      this.actionsConfiguration.push(this.formBuilder.group(a));
+      this.actionsConfiguration.push(this.formBuilder.group({
+        device: [a.device],
+        setting: [a.setting],
+        value: [this.getValueField(a.value)]
+      }));
     });
   }
+
+  isStringTrue = s => s == 'true';
+
+  getBooleanValue = s => this.isStringTrue(s) ? true : false;
+
+  isBoolean = val => val == 'true' || val == 'false';
+
+  getValueField = (val) => this.isBoolean(val) ? this.getBooleanValue(val) : val;
 
   addCondition() {
     this.conditionsConfiguration.push(this.formBuilder.group({
