@@ -169,13 +169,13 @@ const deleteById = async (id) => {
     if (COUNT == 1) {
         await SQL`
             delete from device_telemetry
-            where device_id = ${ ID }`;
+            where device_id = ${ id }`;
         await SQL`
             delete from device_setting
-            where device_id = ${ ID }`;
+            where device_id = ${ id }`;
         return id;
     } else if (COUNT == 0) {
-        console.log(`GroupsService group with id ${id} not found.`);
+        console.log(`Device with id ${id} not found.`);
         return undefined;
     }
 }

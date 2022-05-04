@@ -54,9 +54,9 @@ controlRoutes.get('/settings/:device_id', async (req, res) => {
             return;
         }
 
-        let DEVICE = await devicesService.findById(DEVICE_ID);
+        let device = await devicesService.findById(DEVICE_ID);
 
-        if (!DEVICE) {
+        if (!device) {
             res.status(400).json({'status': 'Device ID is not registered at the system.'});
             return;
         }
@@ -75,8 +75,10 @@ controlRoutes.get('/settings/:device_id', async (req, res) => {
             
         }
 
+
+        device = await devicesService.findById(DEVICE_ID);
         res.status(200).json({
-            device: DEVICE
+            device: device
         });
     } catch (error) {
         console.error(`Error (controlRouter.settings): ${error}`);
