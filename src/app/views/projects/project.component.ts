@@ -19,7 +19,7 @@ export class ProjectComponent {
 
   }
 
-  private project:any = {};
+  project:any = {};
 
   ngOnInit() {
     this.loadProject();
@@ -59,5 +59,7 @@ export class ProjectComponent {
         });
     }
   }
+
+  onSubmit(){}
 
 }

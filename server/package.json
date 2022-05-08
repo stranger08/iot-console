@@ -4,7 +4,8 @@
   "description": "Backend for IOT console ",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node -r dotenv/config index.js dotenv_config_path=./env/local.env",
+    "start:docker": "node -r dotenv/config index.js dotenv_config_path=./env/docker.env",
     "test": "test"
   },
   "author": "S8",
@@ -13,6 +14,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "ramda": "^0.27.1",
     "express": "^4.17.1",
     "express-secure-only": "^0.2.1",
     "express-session": "^1.17.2",
@@ -25,7 +27,8 @@
     "postgres": "^3.0.5",
     "swagger-ui-express": "^4.3.0",
     "uuid": "^8.3.2",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "got": "^11.8.3"

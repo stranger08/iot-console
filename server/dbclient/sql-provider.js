@@ -1,17 +1,17 @@
-const postgres = require('postgres')
-
-const URI = 'postgres://localhost:5432/postgres';
+const postgres = require('postgres');
+const config = require('../config');
 
 let client = null;
 
 const constructConnection = async () => {
+    const configuration = await config();
     try {
         const conn = await postgres({
-            host: 'localhost',
-            port: 5432,
-            database: 'postgres',
-            username: 'postgres',
-            password: 'postgres',
+            host: configuration.PG_HOST,
+            port: configuration.PG_PORT,
+            database: configuration.PG_DB,
+            username: configuration.PG_USER,
+            password: configuration.PG_PASS,
         });
         return conn;
     } catch (err) {

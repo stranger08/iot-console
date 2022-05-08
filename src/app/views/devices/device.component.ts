@@ -66,8 +66,8 @@ export class DeviceComponent {
     },
   ]
 
-  private device:any = {};
-  private group:any = {};
+  device:any = {};
+  group:any = {};
   deviceForm : FormGroup;
 
   ngOnInit() {

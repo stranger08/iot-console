@@ -1,6 +1,6 @@
 export class BaseService {
 
-  _hostUrl:string = 'http://localhost:3000';
+  _hostUrl:string = 'http://localhost:8050';
 
   auth() {
     return {

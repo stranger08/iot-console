@@ -12,7 +12,7 @@ export class SessionService {
     return this.projectChange;
   }
 
-  _hostUrl:string = 'http://localhost:3000';
+  _hostUrl:string = 'http://localhost:8050';
 
   constructor(
     private http: HttpClient

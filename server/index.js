@@ -44,7 +44,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./docs/device-bridge-swagger.json');
 app.use('/api-docs/device-bridge', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const PORT = 3000;
+const PORT = 8050;
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`)
 });

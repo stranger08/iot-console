@@ -1,11 +1,12 @@
-const { MongoClient } = require("mongodb")
-const MONGO_URI = "mongodb://root:password@localhost:27017"
+const { MongoClient } = require("mongodb");
+const config = require('../config');
 
 let client = null;
 
 const constructConnection = async () => {
+    const configuration = await config();
     try {
-        const conn = new MongoClient(MONGO_URI);
+        const conn = new MongoClient(configuration.MONGO_URI);
         await conn.connect();
         console.log("Connected successfully to server");
         return conn;

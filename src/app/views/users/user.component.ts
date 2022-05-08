@@ -17,7 +17,7 @@ export class UserComponent {
 
   }
 
-  private device:any = {};
+  device:any = {};
 
   ngOnInit() {
     this.route.params.subscribe(params => {

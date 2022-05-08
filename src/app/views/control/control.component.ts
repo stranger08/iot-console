@@ -20,7 +20,7 @@ export class ControlComponent {
 
   }
 
-  private control:any = {};
+  control:any = {};
   controlForm : FormGroup;
   devices:any = [];
 

@@ -15,7 +15,7 @@ export class GroupComponent {
 
   }
 
-  private group:any = {};
+  group:any = {};
 
   ngOnInit() {
     this.route.params.subscribe(params => {
