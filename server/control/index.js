@@ -67,11 +67,11 @@ controlRoutes.get('/settings/:device_id', async (req, res) => {
             let controlId = ramda.path(['control_id'], controlRule);
             let isControlRuleApplied = await applyControl(controlId);
 
-            if (isControlRuleApplied) {
-                console.log(`Control rule ${controlId} has been applied`);
-            } else {
-                console.log(`Control rule ${controlId} has not been applied`);
-            }
+            // if (isControlRuleApplied) {
+            //     console.log(`Control rule ${controlId} has been applied`);
+            // } else {
+            //     console.log(`Control rule ${controlId} has not been applied`);
+            // }
             
         }
 

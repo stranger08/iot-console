@@ -14,8 +14,7 @@ services:
       - db-data:/var/lib/postgresql/data
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     
-  mongo:
-    container_name: container-mongodb
+  mongo-db:
     image: mongo:latest
     restart: always
     ports:
@@ -27,6 +26,46 @@ services:
     volumes:
       - ./mongodb/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - mongo-db-data:/data/db
+    networks:
+      - local
+  
+  iot-console1:
+    build: ./
+    mem_limit: 512m
+    mem_reservation: 256M
+    cpus: 0.25
+    scale: 1
+    ports:
+      - 8050:8050
+    networks:
+      - local
+    depends_on:
+      - postgres-db
+      - mongo-db
+
+  iot-console2:
+    build: ./
+    mem_limit: 512m
+    mem_reservation: 256M
+    cpus: 0.25
+    scale: 1
+    ports:
+      - 8051:8050
+    networks:
+      - local
+    depends_on:
+      - postgres-db
+      - mongo-db
+
+  local-nginx:
+    build: ./nginx
+    ports:
+      - 8888:80
+    networks:
+      - local
+    depends_on:
+      - iot-console1
+      - iot-console2
 
 volumes:
   db-data:
@@ -34,3 +73,4 @@ volumes:
 
 networks:
   local:
+    name: local
